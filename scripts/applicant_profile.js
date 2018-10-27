@@ -462,17 +462,28 @@ function Applicant_Profile(ref){
             awards.setAttribute("rows","4");
             awards.setAttribute("cols","30");
         },
+        _add_exp_sub_box:function(box){
+            var states,train,awards;
+            states = document.createElement("select");
+            train = document.createElement("textarea");
+            awards = document.createElement("textarea");
+            this._add_exp_states(states);
+            this._add_exp_training(train);
+            this._add_exp_awards(awards);  
+            box.appendChild(states);
+            box.appendChild(train);
+            box.appendChild(awards);
+            exp.appendChild(box);
+            
+        },
         add_exp_box:function(){
             var box = document.createElement("div");
-            var vclass,fr,to,yrs,miles,states,train,awards;
+            var vclass,fr,to,yrs,miles;
             vclass = document.createElement("input");
             fr = document.createElement("input");
             to = document.createElement("input");
             yrs = document.createElement("input");
             miles = document.createElement("input");
-            states = document.createElement("select");
-            train = document.createElement("textarea");
-            awards = document.createElement("textarea");
             box.classList.add("input_containers");
             box.style.flex = '0 1 auto';
             box.style.order = exp_box_order;
@@ -482,19 +493,13 @@ function Applicant_Profile(ref){
             this._add_exp_fr(fr);
             this._add_exp_to(to);
             this._add_exp_yrs(yrs);
-            this._add_exp_miles(miles);
-            this._add_exp_states(states);
-            this._add_exp_training(train);
-            this._add_exp_awards(awards);    
+            this._add_exp_miles(miles);  
             box.appendChild(vclass);
             box.appendChild(fr);
             box.appendChild(to);
             box.appendChild(yrs);
             box.appendChild(miles);
-            box.appendChild(states);
-            box.appendChild(train);
-            box.appendChild(awards);
-            exp_field.appendChild(box);
+            exp.appendChild(box);
         },
         _set_exp:function(){
             exp_form = document.createElement("form");
@@ -503,18 +508,29 @@ function Applicant_Profile(ref){
             legend.innerHTML = "Experience";;
             legend.classList.add("labelz");
             exp = document.createElement("div");
+            var box = document.createElement("div");
             exp.setAttribute("id","exp");
+            box.setAttribute("id","exp_states_and_awards_box");
             exp_form.style.margin = "1% 0.5% 0% 0.5%";
             exp_form.style.order = "4";
             exp.style.display = "flex";
+            exp.style.flexDirection = "column";
+            exp.style.flex = "0 1 auto";
+            exp.style.order = "1";
+            box.style.display = "flex";
+            box.style.flexDirection = "row wrap";
+            box.style.flex = "0 1 auto";
+            box.style.order = "2";
             exp_form.style.flexDirection = "row wrap";
             exp_form.style.justifyContent = "flex-start";
             exp_form.style.alignItems = "flex-start";
             exp_form.style.alignContent = "flex-start";
             exp_form.style.width = "99%";
             this.add_exp_box();
+            this._add_exp_sub_box(box);
             exp_field.appendChild(legend);
             exp_field.appendChild(exp);
+            exp_field.appendChild(box);
             exp_form.appendChild(exp_field);
             body.appendChild(exp_form);
         },
@@ -584,14 +600,23 @@ function Applicant_Profile(ref){
             var box = document.createElement("div");
             var employer,addr,phone,addr_fr, addr_to,position,reason,motor_regs,cfr;
             employer = document.createElement("input");
+            employer.setAttribute('class','employer');
             addr = document.createElement("input");
+            addr.setAttribute('class','address');
             phone = document.createElement("input");
+            phone.setAttribute('class','phone');
             addr_fr = document.createElement("input");
+            addr_fr.setAttribute('class','from');
             addr_to = document.createElement("input");
+            addr_to.setAttribute('class','to');
             position = document.createElement("input");
+            position.setAttribute('class','position');
             reason = document.createElement("textarea");
+            reason.setAttribute('class','reason');
             motor_regs = document.createElement("input");
+            motor_regs.setAttribute('class','regs');
             cfr = document.createElement("input");
+            cfr.setAttribute('class','cfr');
             box.classList.add("input_containers");
             box.style.flex = '0 1 auto';
             box.style.order = emp_box_order;
@@ -801,18 +826,21 @@ function Applicant_Profile(ref){
             box.style.minWidth = "85%";
             addr = document.createElement("input");
             addr.setAttribute("placeholder","Address");
+            addr.setAttribute("class","address");
             addr.classList.add("inputs");
             addr.style.flex = '0 1 auto';
             addr.style.order = "1";
             addr.style.width = "50%";
             addr_fr = document.createElement("input");
             addr_fr.setAttribute("placeholder","From");
+            addr_fr.setAttribute("class","from");
             addr_fr.classList.add("inputs");
             addr_fr.style.flex = "0 1 auto";
             addr_fr.style.order = "2";
             addr_fr.style.width = "15%";
             addr_to = document.createElement("input");
             addr_to.setAttribute("placeholder","To");
+            addr_to.setAttribute("class","to");
             addr_to.classList.add("inputs");
             addr_to.style.flex = "0 1 auto";
             addr_to.style.order = "3";
@@ -874,8 +902,6 @@ function Applicant_Profile(ref){
             });
             $('body').find('#profile_body').find('textarea').each(function(){
                 $(this)[0].value = '';
-                $(this)[0].setAttribute("rows","4");
-                $(this)[0].setAttribute("cols","40");
             });
             box_order_obj_arr.forEach(function(item){
                 if(item['cur_itr'] > 0){
@@ -885,21 +911,21 @@ function Applicant_Profile(ref){
                 }
             });
         },
-        _populate_exp_inputs:function(){
+        _populate_exp_inputs:function(states,vclass,from,to,yrs,miles,training,awards){
             
         },
         _populate_exp:function(user){
             var obj2 = JSON.parse(JSON.stringify(user['experience']));
-            var states = "";
+            var states = [];
             var vclass,from, to, yrs, miles,training,awards;
             var state_len = Object.keys(obj2['states']).length;
             for(var i = 0; i < state_len; i++){
                     if(i >= 0 && state_len > 1 && i < state_len -1){
-                            states += obj2['states'][i]+", ";		
+                            states.push(obj2['states'][i]);		
                     }else if(i === 0 && state_len === 1){
-                            states += obj2['states'][i];
+                            states.push(obj2['states'][i]);
                     }else if(i > 0 && i === state_len - 1){
-                            states += obj2['states'][i];
+                            states.push(obj2['states'][i]);
                     }	
             }
             obj2['vehicles_array'].forEach(function(item){
@@ -908,7 +934,7 @@ function Applicant_Profile(ref){
                     to = new Date(item["to"]).toDateString();
                     yrs = item["total_time"];
                     miles = item["total_miles"];
-            });
+            });//box order is 2
             console.log(states);
             training = obj2["special_training"];
             awards = obj2["awards"];
@@ -916,15 +942,15 @@ function Applicant_Profile(ref){
             console.log("Awards: "+awards);
         },
         _populate_emp_inputs:function(address,employer,pos,res,fed,cfr,phone,from,to,jobj){
-            jobj.children('input')[0].value = employer;
-            jobj.children('input')[1].value = address;
-            jobj.children('input')[2].value = phone;
-            jobj.children('input')[3].value = from;
-            jobj.children('input')[4].value = to;
-            jobj.children('input')[5].value = pos;
-            jobj.children('input')[6].value = fed;
-            jobj.children('input')[7].value = cfr;
-            jobj.children('textarea')[0].value = res;
+            jobj.find('.employer').val(employer);
+            jobj.find('.address').val(address);
+            jobj.find('.phone').val(phone);
+            jobj.find('.from').val(from);
+            jobj.find('.to').val(to);
+            jobj.find('.position').val(pos);
+            jobj.find('.regs').val(fed);
+            jobj.find('.cfr').val(cfr);
+            jobj.find('.reason').val(res);
         },
         _populate_emp:function(user){
             var obj2 = JSON.parse(JSON.stringify(user['employers']));
@@ -960,9 +986,9 @@ function Applicant_Profile(ref){
         },
         _populate_addr_inputs:function(res,from,to,obj){
              var jobj = obj;
-             jobj.children('input')[0].value = res;
-             jobj.children('input')[1].value = from;
-             jobj.children('input')[2].value = to;
+             jobj.find('.address').val(res);
+             jobj.find('.from').val(from);
+             jobj.find('.to').val(to);
         },
         _populate_addr:function(user){
             var res = "";
@@ -1021,7 +1047,7 @@ function Applicant_Profile(ref){
         construct:function(){
             this.__proto__ = new Profile_Page($outer,"applicant");
             this.init();
-            this._set_body();
+            this._set_body();this.add_exp_box();this.add_exp_box();this.add_emp_box();
         }
     };
     return obj;
