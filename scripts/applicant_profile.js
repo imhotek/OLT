@@ -444,6 +444,7 @@ function Applicant_Profile(ref){
             states.style.flex = "0 1 auto";
             states.style.order = "6";
             states.style.width = "17.5%";
+            states.multiple = true;
         },
         _add_exp_training:function(training){
             training.setAttribute("placeholder","Special Training");
@@ -884,6 +885,36 @@ function Applicant_Profile(ref){
                 }
             });
         },
+        _populate_exp_inputs:function(){
+            
+        },
+        _populate_exp:function(user){
+            var obj2 = JSON.parse(JSON.stringify(user['experience']));
+            var states = "";
+            var vclass,from, to, yrs, miles,training,awards;
+            var state_len = Object.keys(obj2['states']).length;
+            for(var i = 0; i < state_len; i++){
+                    if(i >= 0 && state_len > 1 && i < state_len -1){
+                            states += obj2['states'][i]+", ";		
+                    }else if(i === 0 && state_len === 1){
+                            states += obj2['states'][i];
+                    }else if(i > 0 && i === state_len - 1){
+                            states += obj2['states'][i];
+                    }	
+            }
+            obj2['vehicles_array'].forEach(function(item){
+                    vclass = item["vehicle_class"];
+                    from = new Date(item["from"]).toDateString();
+                    to = new Date(item["to"]).toDateString();
+                    yrs = item["total_time"];
+                    miles = item["total_miles"];
+            });
+            console.log(states);
+            training = obj2["special_training"];
+            awards = obj2["awards"];
+            console.log("Special training: "+training);
+            console.log("Awards: "+awards);
+        },
         _populate_emp_inputs:function(address,employer,pos,res,fed,cfr,phone,from,to,jobj){
             jobj.children('input')[0].value = employer;
             jobj.children('input')[1].value = address;
@@ -985,6 +1016,7 @@ function Applicant_Profile(ref){
             this._populate_addr(user);
             this._populate_edu(user);
             this._populate_emp(user);
+            this._populate_exp(user);
         },
         construct:function(){
             this.__proto__ = new Profile_Page($outer,"applicant");
