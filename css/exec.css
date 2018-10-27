@@ -1,0 +1,43 @@
+*{
+    padding: 0px;
+    margin: 0px;
+    background-repeat: no-repeat
+}
+
+body{
+    overflow-x: hidden;
+}
+
+.nav_buttons{
+    border-radius: 5px;
+    border: 1px solid white;
+    height: 50%;
+    padding: 2vh 0vw;
+    display: inline-block;
+    font: 3vh bold tahoma;
+    color: white;
+    text-align: center;
+}
+
+div.nav_buttons:hover{
+    color: #33ffff;
+    border: 1px solid #33ffff;
+    cursor: all-scroll;
+}
+
+.backgrounds{
+    position: absolute;
+    background-color: #33ffff;
+    border-radius: 5px;
+    display: inline-block;
+    opacity: 0
+}
+
+.control_buttons{
+    background-color:transparent; 
+    border-color:transparent;
+}
+
+.scrollable{
+    overflow-y: auto
+}

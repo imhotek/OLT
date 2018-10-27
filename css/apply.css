@@ -1,0 +1,102 @@
+body{
+    margin: 0px;
+    padding: 0px;
+    overflow-x: hidden
+}
+
+#container{
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+}
+
+#container > div{
+    order: 1;
+    position: absolute;
+    height: 100%;
+    width: 100%;    
+}
+
+#background_div{
+    order: 1;
+    position: fixed;
+    z-index: -1;
+    opacity: 0.0;
+    transition: opacity 3s ease;
+}
+
+#foreground_div{
+    z-index: 1;
+    opacity: 0.0;
+}
+
+.stop{
+    animation: stop_flash 1s infinite;
+}
+.wait{
+    animation: wait_flash 1s infinite;
+}
+.go{
+    animation: go_flash 1s infinite;
+}
+
+@keyframes stop_flash{
+    0% { background-color: red; },
+    50% { background-color: white; },
+    100% { background-color: red; }
+}
+@keyframes wait_flash{
+    0% { background-color: yellow; },
+    50% { background-color: white; },
+    100% { background-color: yellow; }
+}
+@keyframes go_flash{
+    0% { background-color: green; },
+    50% { background-color: white; },
+    100% { background-color: green; }
+}
+
+.application_pages{
+    margin: 2% 0% 0% 2%; 
+    color: #ffffff; 
+    font: 100% bold Times New Roman;
+}
+
+.q3_div{
+    width: 95%;
+    margin: 2% 0% 0% 2%; 
+    color: #ffffff; 
+    font: 90% bold Times New Roman
+}
+.q4_div{
+    width: 95%;
+    margin: 2% 0% 0% 2%; 
+    color: #ffffff; 
+    font: 80% bold Times New Roman
+}
+.q5_div{
+    width: 95%;
+    margin: 2% 0% 0% 2%; 
+    color: #ffffff; 
+    font: 80% bold Times New Roman
+}
+.q6_div{
+    width: 95%;
+    margin: 2% 0% 0% 2%; 
+    color: #ffffff; 
+    font: 80% bold Times New Roman;
+}
+.sub_butts{
+    margin: 1% 1% 0% 0.5%;
+}
+
+.error{
+    color: red;
+    background-color: pink;
+    border: 2px solid red;
+}

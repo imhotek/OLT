@@ -1,0 +1,54 @@
+Applicant;
++----------------------+---------------------+------+-----+---------+----------------+
+| Field                | Type                | Null | Key | Default | Extra          |
++----------------------+---------------------+------+-----+---------+----------------+
+| username             | varchar(30)         | YES  |     | NULL    |                |
+| first_name           | varchar(30)         | YES  |     | NULL    |                |
+| middle_name          | varchar(30)         | YES  |     | NULL    |                |
+| last_name            | varchar(30)         | YES  |     | NULL    |                |
+| phone                | varchar(10)         | YES  |     | NULL    |                |
+| phone_type           | varchar(4)          | YES  |     | NULL    |                |
+| emergency_phone      | varchar(10)         | YES  |     | NULL    |                |
+| emergency_phone_type | varchar(4)          | YES  |     | NULL    |                |
+| dob                  | date                | YES  |     | NULL    |                |
+| age                  | tinyint(3) unsigned | YES  |     | NULL    |                |
+| ssn                  | varchar(9)          | YES  |     | NULL    |                |
+| position             | varchar(30)         | YES  |     | NULL    |                |
+| last_phys_exam       | date                | YES  |     | NULL    |                |
+| email                | varchar(30)         | YES  |     | NULL    |                |
+| grade_school         | tinyint(3) unsigned | YES  |     | NULL    |                |
+| college              | tinyint(3) unsigned | YES  |     | NULL    |                |
+| grad_school          | tinyint(3) unsigned | YES  |     | NULL    |                |
+| denied_license       | enum('T','F')       | YES  |     | NULL    |                |
+| suspended_license    | enum('T','F')       | YES  |     | NULL    |                |
+| phys_limits          | enum('T','F')       | YES  |     | NULL    |                |
+| felony_convictions   | enum('T','F')       | YES  |     | NULL    |                |
+| id                   | int(10) unsigned    | NO   | PRI | NULL    | auto_increment |
+| last_page_completed  | tinyint(3) unsigned | YES  |     | NULL    |                |
+| user_type            | varchar(30)         | YES  |     | NULL    |                |
+| initial_reg_date     | varchar(20)         | YES  |     | NULL    |                |
+| address_completed    | enum('T','F')       | YES  |     | NULL    |                |
+
+
+Employee;
++-----------------------+---------------------+------+-----+---------+----------------+
+| Field                 | Type                | Null | Key | Default | Extra          |
++-----------------------+---------------------+------+-----+---------+----------------+
+| username              | varchar(30)         | NO   |     | NULL    |                |
+| first_name            | varchar(30)         | NO   |     | NULL    |                |
+| middle_name           | varchar(30)         | YES  |     | NULL    |                |
+| last_name             | varchar(30)         | NO   |     | NULL    |                |
+| phone                 | varchar(10)         | NO   |     | NULL    |                |
+| phone_type            | varchar(4)          | NO   |     | NULL    |                |
+| emergency_phone       | varchar(10)         | NO   |     | NULL    |                |
+| emergency_phone_type  | varchar(4)          | NO   |     | NULL    |                |
+| dob                   | date                | YES  |     | NULL    |                |
+| age                   | tinyint(3) unsigned | YES  |     | NULL    |                |
+| ssn                   | varchar(9)          | YES  |     | NULL    |                |
+| position              | varchar(30)         | NO   |     | NULL    |                |
+| email                 | varchar(30)         | NO   |     | NULL    |                |
+| initial_reg_date      | varchar(20)         | YES  |     | NULL    |                |
+| authentication_string | varchar(32)         | NO   |     | NULL    |                |
+| id                    | int(10) unsigned    | NO   | PRI | NULL    | auto_increment |
++-----------------------+---------------------+------+-----+---------+----------------+
+

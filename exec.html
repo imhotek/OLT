@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/exec.css">
+        <link rel="stylesheet" href="css/profile.css">
+    </head>
+    <body>
+        <div id="wrapper">
+            <div id="nav">
+                <div id="welcome"></div>
+                <div id="applicants">Applicants</div>
+                <div id="employees">Employees</div>
+                <div id="calendar">Calendar</div>
+                <div id="security">Security</div>
+            </div>
+            <div id="content_background">
+                <div id="loader"></div>                
+                <div id="side_panel"></div>
+            </div>
+            <div id="content_foreground">
+                <div id="media_wrapper">
+                    <div id="screen"><canvas></canvas></div>
+                    <div id="control_panel">
+                        <button id="back" class="control_buttons"><img src="pics/rwind.png" alt="back"/></button>
+                        <button id="start_stop" class="control_buttons"><img src="pics/record.png" alt="start_stop"/></button>
+                        <button id="forward" class="control_buttons"><img src="pics/fforward.png" alt="forward"/></button>
+                        <button id="expand" class="control_buttons"><img src="pics/fullscreen.png" alt="expand"/></button>
+                    </div>
+                </div>
+                <div id="panel"></div>
+            </div>
+        </div>        
+    <script type="text/javascript" src="scripts/jquery.js"></script>
+    <script type="text/javascript" src="scripts/jquery-ui.js"></script>
+    <script type="text/javascript" src="scripts/pubsub.js"></script>
+    <script type="text/javascript" src="scripts/license_validator.js"></script>
+        <script type="text/javascript" src="scripts/profile_page.js"></script>
+        <script type="text/javascript" src="scripts/applicant_profile.js"></script>
+        <script type="text/javascript" src="scripts/employee_profile.js"></script>
+        <script type="text/javascript" src="scripts/user.js"></script>
+        <script type="text/javascript" src="scripts/user_factory.js"></script>
+    <script type="text/javascript" src="scripts/exec.js"></script>
+    </body>
+</html>

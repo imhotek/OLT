@@ -1,0 +1,38 @@
+*{
+    margin: 0px;
+    margin: 0px;
+}
+
+.labelz{
+    font: 3.5vh bold,black,tahoma;
+    color: black;
+}
+
+.sub_labelz{
+    font: 2.5vh bold,black,tahoma;
+    color: black;
+}
+
+.input_containers{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.input_containers_b{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.inputs{
+    font: 2.5vh bold,black,tahoma;
+    color: black;
+}
+
+.sub_inputs{
+    font: 2vh bold,black,tahoma;
+    color: black;
+}
