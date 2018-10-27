@@ -465,8 +465,11 @@ function Applicant_Profile(ref){
         _add_exp_sub_box:function(box){
             var states,train,awards;
             states = document.createElement("select");
+            states.setAttribute('class','states');
             train = document.createElement("textarea");
+            train.setAttribute('class','training');
             awards = document.createElement("textarea");
+            awards.setAttribute('class','awards');
             this._add_exp_states(states);
             this._add_exp_training(train);
             this._add_exp_awards(awards);  
@@ -480,10 +483,15 @@ function Applicant_Profile(ref){
             var box = document.createElement("div");
             var vclass,fr,to,yrs,miles;
             vclass = document.createElement("input");
+            vclass.setAttribute('class','vclass');
             fr = document.createElement("input");
+            fr.setAttribute('class','from');
             to = document.createElement("input");
+            to.setAttribute('class','to');
             yrs = document.createElement("input");
+            yrs.setAttribute('class','yrs');
             miles = document.createElement("input");
+            miles.setAttribute('class','miles');
             box.classList.add("input_containers");
             box.style.flex = '0 1 auto';
             box.style.order = exp_box_order;
@@ -911,8 +919,12 @@ function Applicant_Profile(ref){
                 }
             });
         },
-        _populate_exp_inputs:function(states,vclass,from,to,yrs,miles,training,awards){
-            
+        _populate_exp_inputs:function(vclass,from,to,yrs,miles,jobj){
+            jobj.find('.vclass').val(vclass);
+            jobj.find('.from').val(from);
+            jobj.find('.to').val(to);
+            jobj.find('.yrs').val(yrs);
+            jobj.find('.miles').val(miles);
         },
         _populate_exp:function(user){
             var obj2 = JSON.parse(JSON.stringify(user['experience']));
@@ -928,18 +940,28 @@ function Applicant_Profile(ref){
                             states.push(obj2['states'][i]);
                     }	
             }
-            obj2['vehicles_array'].forEach(function(item){
+            obj2['vehicles_array'].forEach(function(item,index){
                     vclass = item["vehicle_class"];
                     from = new Date(item["from"]).toDateString();
                     to = new Date(item["to"]).toDateString();
                     yrs = item["total_time"];
                     miles = item["total_miles"];
-            });//box order is 2
-            console.log(states);
-            training = obj2["special_training"];
-            awards = obj2["awards"];
-            console.log("Special training: "+training);
-            console.log("Awards: "+awards);
+                    training = obj2["special_training"];
+                    awards = obj2["awards"];
+                    if(index === 0){	
+                        var jobj = $(box_order_obj_arr[2]['dom_obj_ref_arr'][index]);
+                        _populate_exp_inputs(vclass,from,to,yrs,miles,jobj);
+                        for(var i = 0; i < states.length;i++){
+                            jobj.find('.states').append("<option value='"+(i+1)+"'>"+states[i]+"</option>");
+                        }                        
+                        jobj.find('.training').val(training);
+                        jobj.find('.awards').val(awards);
+                    }else if(index > 0){
+                        add_exp_box(); 	
+                        var jobj = $(box_order_obj_arr[2]['dom_obj_ref_arr'][index]);                       
+                        _populate_exp_inputs(vclass,from,to,yrs,miles,jobj);
+                    }
+            });
         },
         _populate_emp_inputs:function(address,employer,pos,res,fed,cfr,phone,from,to,jobj){
             jobj.find('.employer').val(employer);
@@ -1047,7 +1069,7 @@ function Applicant_Profile(ref){
         construct:function(){
             this.__proto__ = new Profile_Page($outer,"applicant");
             this.init();
-            this._set_body();this.add_exp_box();this.add_exp_box();this.add_emp_box();
+            this._set_body();
         }
     };
     return obj;
