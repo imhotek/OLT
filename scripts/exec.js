@@ -71,17 +71,21 @@ var exec = (function(){
             "justify-content":"flex-start",
             "align-items":"flex-start",
             "min-width":(width*0.7)+"px",
-            "min-height":2*(height*0.8)+"px",
+            "min-height":(height*0.8)+"px",
             "opacity":"0"
         });
         $loader.animate({"opacity":"1"},750);
         $panel.css({
+            "position":"fixed",
             "width":(width*0.215)+"px",
             "height":(height*0.8)+"px",
             "left":(width*0.775)+"px",
-            "top":(height*0.05)+"px"
+            "top":(height*0.17)+"px",
+            "background-color": "#33ffff",
+            "border-radius": "5px",
+            "display": "inline-block",
+            "opacity":"0"
         });
-        $panel.addClass("backgrounds");
         $panel.animate({"opacity":"1"},750);
     }
     function _init_foreground(){
@@ -173,13 +177,13 @@ var exec = (function(){
     function _init_panel(){  
         $panel_wrapper = $body.find("#panel"); 
         $panel_wrapper.css({
-            "position":"relative",
+            "position":"fixed",
             "display":"block",
             "padding-top":((height*0.8)*0.00625)+"px",
             "width":(width*0.215)+"px",
             "height":(height*0.8)+"px",
             "left":width+"px",
-            "top":(height*0.05)+"px",
+            "top":(height*0.17)+"px",
             "border-radius":"5px",
             "background-color":"black"
         });

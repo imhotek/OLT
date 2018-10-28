@@ -907,7 +907,7 @@ function Applicant_Profile(ref){
             body.style.alignItems = "flex-start";
             body.style.alignContent = "space-between";
             body.style.top = "40%";
-            body.style.minHeight = "100%";
+            //body.style.minHeight = "100%";
             
             this.page.appendChild(body);
             this._set_res_hist();

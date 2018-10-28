@@ -13,7 +13,7 @@ function Profile_Page(ref,userType){
         _set_page: function(){
             this.page = document.createElement("div");
             this.page.setAttribute("id",user_type+"_page");
-            this.page.style.flex = "0 1 auto";
+            this.page.style.flex = "1";
             this.page.style.order = "1";
             this.page.style.display = "flex";
             this.page.style.flexFlow = "column";
@@ -21,7 +21,7 @@ function Profile_Page(ref,userType){
             this.page.style.alignItems = "flex-start";
             this.page.style.backgroundColor = "#D3D3D3";
             this.page.style.minWidth = "99%";
-            this.page.style.minHeight = height;//"50%";
+            //this.page.style.minHeight = height;//"50%";
             this.page.style.border = "5px solid black";
             this._set_header();
             $outer[0].appendChild(this.page);
