@@ -6,6 +6,7 @@ function Profile_Page(ref,userType){
     var header, picBox, usernameBox, detailBox, banner, nameBox, phoneBox, emailBox, idBox;
     header = picBox = usernameBox = detailBox = banner = nameBox = phoneBox = emailBox = idBox = null;
     var height = $outer[0].style.minHeight;
+    var width = window.innerWidth;
     var default_img_src = "pics/avatar.png";
     var banner_src = "pics/collapsed_logo.png";
     var obj = {
@@ -13,15 +14,13 @@ function Profile_Page(ref,userType){
         _set_page: function(){
             this.page = document.createElement("div");
             this.page.setAttribute("id",user_type+"_page");
-            this.page.style.flex = "1";
-            this.page.style.order = "1";
             this.page.style.display = "flex";
+            this.page.style.order = "1";
             this.page.style.flexFlow = "column";
             this.page.style.justifyContent = "flex-start";
             this.page.style.alignItems = "flex-start";
             this.page.style.backgroundColor = "#D3D3D3";
-            this.page.style.minWidth = "99%";
-            //this.page.style.minHeight = height;//"50%";
+            this.page.style.maxWidth = (width*0.7)+"px";
             this.page.style.border = "5px solid black";
             this._set_header();
             $outer[0].appendChild(this.page);
@@ -223,11 +222,12 @@ function Profile_Page(ref,userType){
             header.style.flex = "0 1 autp";
             header.style.order = "1";
             header.style.display = "flex";
-            header.style.flexFlow = "column nowrap";
+            header.style.flexFlow = "column";
             header.style.justifyContent = "flex-start";
             header.style.alignItems = "flex-start";
             header.style.minWidth = "99%";
             header.style.minHeight = "50%";
+            header.style.border = "2px solid green";
             this._set_picBox();
             this._set_detailBox();
             this.page.appendChild(header);

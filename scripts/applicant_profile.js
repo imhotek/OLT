@@ -898,18 +898,15 @@ function Applicant_Profile(ref){
         _set_body:function(){
             body = document.createElement("div");
             body.setAttribute("id","profile_body");
-            body.style.position = "absolute";
+            body.style.display = "flex";
             body.style.flex = "0 1 auto";
             body.style.order = "2";
-            body.style.display = "flex";
             body.style.flexFlow = "column";
             body.style.justifyContent = "flex-start";
             body.style.alignItems = "flex-start";
             body.style.alignContent = "space-between";
-            body.style.top = "40%";
-            //body.style.minHeight = "100%";
-            
-            this.page.appendChild(body);
+            body.style.border = "2px solid red";
+            body.style.maxWidth = (window.innerWidth*0.7)+"px"; 
             this._set_res_hist();
             this._set_edu();
             this._set_emp_hist();
@@ -917,7 +914,8 @@ function Applicant_Profile(ref){
             this._set_lic();
             this._set_acc_hist();
             this._set_con_hist();
-            this._set_explanation();
+            this._set_explanation();           
+            this.page.appendChild(body);
             
         },
         clear: function(){
