@@ -101,9 +101,13 @@ function Applicant_Profile(ref){
             update_box_order(5,con_hist_box_order,box);
             box.style.minWidth = "85%";
             date = document.createElement("input");
+            date.setAttribute('class','date');
             loc = document.createElement("input"); 
+            loc.setAttribute('class','location');
             charge = document.createElement("input");
+            charge.setAttribute('class','charge');
             penalty = document.createElement("input");
+            penalty.setAttribute('class','penalty');
             this._add_con_date(date);
             this._add_con_loc(loc);
             this._add_con_charge(charge);
@@ -141,6 +145,7 @@ function Applicant_Profile(ref){
             num_injrs_lbl.style.flex = "0 1 auto";
             num_injrs_lbl.style.order = "6";
             num_injrs.classList.add("inputs");
+            num_injrs.setAttribute('class','num_injrs');
             num_injrs.style.flex = "0 1 auto";
             num_injrs.style.order = "7";
             num_injrs.style.width = "5%";           
@@ -151,12 +156,14 @@ function Applicant_Profile(ref){
             num_fts_lbl.style.flex = "0 1 auto";
             num_fts_lbl.style.order = "4";
             num_fts.classList.add("inputs");
+            num_fts.setAttribute('class','num_fts');
             num_fts.style.flex = "0 1 auto";
             num_fts.style.order = "5";
             num_fts.style.width = "5%";          
         },
         _add_acc_loc:function(loc){ 
             loc.setAttribute("placeholder","Location");
+            loc.setAttribute('class','location');
             loc.classList.add("inputs");
             loc.style.flex = "0 1 auto";
             loc.style.order = "3";
@@ -164,6 +171,7 @@ function Applicant_Profile(ref){
         },
         _add_acc_type:function(type){
             type.setAttribute("placeholder","Type");
+            type.setAttribute('class','type');
             type.classList.add("inputs");
             type.style.flex = "0 1 auto";
             type.style.order = "2";
@@ -171,6 +179,7 @@ function Applicant_Profile(ref){
         },
         _add_acc_date:function(date){  
             date.setAttribute("placeholder","Date");
+            date.setAttribute('class','date');
             date.classList.add("inputs");
             date.style.flex = '0 1 auto';
             date.style.order = "1";
@@ -235,6 +244,7 @@ function Applicant_Profile(ref){
             l1_div.appendChild(l1);
             box.appendChild(l1_div);
             state = document.createElement("input");
+            state.setAttribute('class','state');
             state.style.order = "2";
             state.classList.add("sub_inputs");
             state.style.marginLeft = "1%";
@@ -251,6 +261,7 @@ function Applicant_Profile(ref){
             l2_div.appendChild(l2);
             box.appendChild(l2_div);
             num = document.createElement("input");
+            num.setAttribute('class','lic_num');
             num.style.order = "4";
             num.classList.add("sub_inputs");
             num.style.marginLeft = "1%";
@@ -268,6 +279,7 @@ function Applicant_Profile(ref){
             l3_div.appendChild(l3);
             box.appendChild(l3_div);
             type = document.createElement("input");
+            type.setAttribute('class','type');
             type.style.order = "6";
             type.classList.add("sub_inputs");
             type.style.marginLeft = "1%";
@@ -276,6 +288,7 @@ function Applicant_Profile(ref){
         },
         _add_lic_lbl_4:function(endmnts,box){
             endmnts = document.createElement("textarea");
+            endmnts.setAttribute('class','endorsements');
             endmnts.setAttribute("placeholder","Endorsements");
             endmnts.setAttribute("rows","4");
             endmnts.setAttribute("cols","40");
@@ -294,6 +307,7 @@ function Applicant_Profile(ref){
             l5_div.appendChild(l5);
             box.appendChild(l5_div);
             exp_date = document.createElement("input");
+            exp_date.setAttribute('class','exp_date');
             exp_date.style.order = "9";
             exp_date.classList.add("sub_inputs");
             exp_date.style.maxWidth = "10%";
@@ -310,7 +324,7 @@ function Applicant_Profile(ref){
             l6_div.appendChild(l6);
             box2.appendChild(l6_div);
             deny = document.createElement("input");
-            deny.setAttribute("id","ephone_input");
+            deny.setAttribute("class","deny");
             deny.style.order = "2";
             deny.classList.add("sub_inputs");
             deny.style.maxWidth = "3%";
@@ -322,11 +336,12 @@ function Applicant_Profile(ref){
             l6_div.style.borderLeft = "1%";
             l6_div.style.order = "3";
             var l6 = document.createElement("label");
-            l6.innerHTML = "Physical Limitations";
+            l6.innerHTML = "Suspended License";
             l6.classList.add("sub_labelz");
             l6_div.appendChild(l6);
             box2.appendChild(l6_div);
             suspend = document.createElement("input");
+            suspend.setAttribute('class','suspend');
             suspend.style.order = "4";
             suspend.classList.add("sub_inputs");
             suspend.style.maxWidth = "3%";
@@ -343,6 +358,7 @@ function Applicant_Profile(ref){
             l6_div.appendChild(l6);
             box2.appendChild(l6_div);
             felony = document.createElement("input");
+            felony.setAttribute('class','felony');
             felony.style.order = "6";
             felony.classList.add("sub_inputs");
             felony.style.maxWidth = "5%";
@@ -919,6 +935,147 @@ function Applicant_Profile(ref){
                 }
             });
         },
+        _populate_con_inputs:function(acc_date,acc_loc,charge,penalty,jobj){
+            jobj.find('.date').val(acc_date);
+            jobj.find('.location').val(acc_loc);
+            jobj.find('.charge').val(charge);
+            jobj.find('.penalty').val(penalty);
+        },
+        _populate_con:function(user){
+            var acc_date = '';
+            var acc_loc = '';
+            var charge = '';
+            var penalty = '';
+            user["convictions"].forEach(function(item,index){
+                acc_date += item["date"];
+		var len = Object.keys(item["location"]).length;
+		for(var i = 0; i < len; i++){
+                    if(len > 4){
+			if(i === 0){
+                            acc_loc += item["location"][i]["long_name"]+" ";		
+			}else if(i === 2 || i === 4){}
+			else if(i > 0 && i < 7){
+                            acc_loc += item["location"][i]["long_name"]+", ";
+			}else if(i === 7){
+                            acc_loc += item["location"][i]["long_name"];
+			}else if(i === 8 && item["location"][i]["long_name"]){
+                            acc_loc += ("-"+ item["location"][i]["long_name"]);
+			}
+                    }else{
+			if(i === 0 || i === 2){
+                            acc_loc += item["location"][i]["long_name"]+", ";		
+			}else if(i === 3){
+                            acc_loc += item["location"][i]["long_name"];
+			}
+                    }	
+                }
+		charge += item["charge"];
+		penalty +=  item["penalty"];
+                if(index === 0){	
+                    var jobj = $(box_order_obj_arr[5]['dom_obj_ref_arr'][index]);
+                    _populate_con_inputs(acc_date,acc_loc,charge,penalty,jobj);
+                }else if(index > 0){
+                    add_exp_box(); 	
+                    var jobj = $(box_order_obj_arr[5]['dom_obj_ref_arr'][index]);                       
+                    _populate_con_inputs(acc_date,acc_loc,charge,penalty,jobj);
+                }
+		acc_date = '';
+		acc_loc = '';
+		charge = '';
+		penalty = '';
+            });
+        },
+        _populate_acc_inputs:function(acc_date,acc_type,acc_loc,fatalities,injuries,jobj){
+            jobj.find('.date').val(acc_date);
+            jobj.find('.type').val(acc_type);
+            jobj.find('.location').val(acc_loc);
+            jobj.find('.num_fts').val(fatalities);
+            jobj.find('.num_injrs').val(injuries);
+        },
+        _populate_acc:function(user){
+            var acc_date = '';
+            var acc_type = '';
+            var acc_loc = '';
+            var fatalities = '';
+            var injuries = '';
+            user["accidents"].forEach(function(item,index){
+                acc_date += item["date"];
+		acc_type += item["type"];
+		var len = Object.keys(item["location"]).length;
+		for(var i = 0; i < len; i++){
+                    if(len > 4){
+			if(i === 0){
+                            acc_loc += item["location"][i]["long_name"]+" ";		
+			}else if(i === 2 || i === 4){}
+			else if(i > 0 && i < 7){
+                            acc_loc += item["location"][i]["long_name"]+", ";
+			}else if(i === 7){
+                            acc_loc += item["location"][i]["long_name"];
+			}else if(i === 8 && item["location"][i]["long_name"]){
+                            acc_loc += ("-"+ item["location"][i]["long_name"]);
+			}
+                    }else{
+			if(i === 0 || i === 2){
+                            acc_loc += item["location"][i]["long_name"]+", ";		
+			}else if(i === 3){
+                            acc_loc += item["location"][i]["long_name"];
+			}
+                    }	
+		}
+                fatalities += item["num_fatalities"];
+		injuries +=  item["num_injuries"];
+                if(index === 0){	
+                    var jobj = $(box_order_obj_arr[4]['dom_obj_ref_arr'][index]);
+                    _populate_acc_inputs(acc_date,acc_type,acc_loc,fatalities,injuries,jobj);
+                }else if(index > 0){
+                    add_exp_box(); 	
+                    var jobj = $(box_order_obj_arr[4]['dom_obj_ref_arr'][index]);                       
+                    _populate_acc_inputs(acc_date,acc_type,acc_loc,fatalities,injuries,jobj);
+                }			
+		acc_date = '';
+		acc_type = '';
+		acc_loc = '';
+		fatalities = '';
+		injuries = '';
+            });
+        },
+        _populate_lic_inputs:function(state,num,type,en,ex,jobj){
+            jobj.find('.state').val(state);
+            jobj.find('.lic_num').val(num);
+            jobj.find('.type').val(type);
+            jobj.find('.endorsements').val(en);
+            jobj.find('.exp_date').val(ex);
+        },
+        _populate_lic:function(user){
+        var obj = JSON.parse(JSON.stringify(user['licenses']));
+	var deny = (obj['denied_license'] === 'T' ? 'Yes':'No');
+	var suspend = (obj['suspended_license'] === 'T' ? 'Yes':'No');
+	var felony = (obj['felony_conviction'] === 'T' ? 'Yes':'No');
+	var len = obj.licenses.length;
+	var state = '';
+	var num;
+	var type = '';
+	var en = '';
+	var ex = '';
+            for(var i = 0; i < len; i++){
+                state = obj['licenses'][i].state;
+                num = obj['licenses'][i].number;
+                type = obj['licenses'][i].type;
+                en = obj['licenses'][i].endorsements;
+                ex = new Date(obj['licenses'][i].expiration_date).toDateString();
+                if(i === 0){	
+                    var jobj = $(box_order_obj_arr[3]['dom_obj_ref_arr'][i]);
+                    _populate_lic_inputs(state,num,type,en,ex,jobj);
+                    jobj.find('.deny').val(deny);
+                    jobj.find('.suspend').val(suspend);
+                    jobj.find('.felony').val(felony);
+                }else if(i > 0){
+                    add_exp_box(); 	
+                    var jobj = $(box_order_obj_arr[3]['dom_obj_ref_arr'][i]);                       
+                    _populate_lic_inputs(state,num,type,en,ex,jobj);
+                }
+            }
+        },
         _populate_exp_inputs:function(vclass,from,to,yrs,miles,jobj){
             jobj.find('.vclass').val(vclass);
             jobj.find('.from').val(from);
@@ -1065,6 +1222,9 @@ function Applicant_Profile(ref){
             this._populate_edu(user);
             this._populate_emp(user);
             this._populate_exp(user);
+            this._populate_lic(user);
+            this._populate_acc(user);
+            this._populate_con(user);
         },
         construct:function(){
             this.__proto__ = new Profile_Page($outer,"applicant");
