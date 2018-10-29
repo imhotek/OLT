@@ -32,6 +32,9 @@ var exec = (function(){
     }   
     function _init_nav_options(){
         var $nav_opts = $body.find("#nav_options");
+        $nav_opts.find('div').each(function(){
+            $(this).addClass('nav_buttons');
+        });
         $nav_opts.css({
             "flex-grow":"3",
             "order":"2",
@@ -39,22 +42,6 @@ var exec = (function(){
             "flex-flow":"row nowrap",
             "justify-content":"space-around",
             "align-items":"center","align-content":"center","min-height":1.5*(height*0.1)+"px"
-        });
-        $nav_opts.find('div').each(function(){
-            $(this).addClass('nav_buttons');
-            $(this).hover(function(){
-                $(this).css({
-                    "color": "#33ffff",
-                    "border": "1px solid #33ffff",
-                    "cursor": "all-scroll"
-                });
-            },function(){
-                $(this).css({
-                    "color": "white",
-                    "border": "1px solid white",
-                    "cursor": "auto"
-                });
-            });
         });
     }
     function _init_welcome(){
@@ -127,7 +114,6 @@ var exec = (function(){
         });
         $loader.animate({"opacity":"1"},750);
         $panel.css({
-            //"position":"fixed",
             "flex":"0 1 auto",
             "order":"2",
             "width":(width*0.215)+"px",
@@ -141,10 +127,16 @@ var exec = (function(){
     function _init_foreground(){
         var $content = $body.find("#content_foreground");
         $content.css({
-            "position":"absolute",
-            "width":width+"px",
-            "height":(height*0.9)+"px",
-            "z-index":"2"
+            "flex":"0 1 auto",
+            "order":"2",
+            "min-width":width+"px",
+            "max-height":(height*0.9)+"px",
+            "display":"flex",
+            "flex-flow":"row nowrap",
+            "justify-content":"space-around",
+            "align-items":"center",
+            "align-content":"center",
+            "z-index":"10"
         });
     }
     function _init_media(){
@@ -152,25 +144,35 @@ var exec = (function(){
         var $screen = $body.find("#screen");
         var $control_panel = $body.find("#control_panel");   
         $media_wrapper.css({
-            "position":"absolute",
+            "flex":"0 1 auto",
+            "order":"1",
+            "background-color": "#33ffff",
+            "border-radius": "5px",
+            "display":"flex",
+            "flex-flow":"column",
+            "justify-content":"center",
+            "align-items":"center",
             "width":(width*0.7)+"px",
-            "height":(height*0.8)+"px",
-            "left":0-(width*0.7)+"px",
-            "top":(height*0.05)+"px"
+            "height":(height*0.8)+"px"
         });
         ctx = $screen.find("canvas")[0].getContext("2d");
         $screen.css({
-            "position":"relative",
+            "flex":"0 1 auto",
+            "order":"1",
             "width":(width*0.7)+"px",
             "height":((height*0.8)*0.85)+"px"
         });
         $control_panel.css({
-            "position":"relative",
-            "display":"inline-block",
+            "flex":"0 1 auto",
+            "order":"2",
+            "display":"flex",
+            "flex-flow":"row nowrap",
+            "justify-content":"center",
+            "align-items":"center",
+            "align-content":"flex-end",
             "width":(width*0.7)+"px",
             "height":((height*0.8)*0.15)+"px",
-            "background-color":"#A9A9A9",
-            "text-align":"center"
+            "background-color":"#A9A9A9"
         });
     }
     function _set_control_dimens(elem){
@@ -226,15 +228,11 @@ var exec = (function(){
     }
     function _init_panel(){  
         $panel_wrapper = $body.find("#panel"); 
-        $panel_wrapper.css({
-            "position":"fixed",
-            "display":"block",
-            "padding-top":((height*0.8)*0.00625)+"px",
+        $panel_wrapper.css({"flex":"0 1 auto",
+            "order":"2",
             "width":(width*0.215)+"px",
             "height":(height*0.8)+"px",
-            "left":width+"px",
-            "top":(height*0.17)+"px",
-            "border-radius":"5px",
+            "border-radius": "5px",
             "background-color":"black"
         });
         
