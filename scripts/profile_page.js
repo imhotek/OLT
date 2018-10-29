@@ -219,7 +219,7 @@ function Profile_Page(ref,userType){
             header = document.createElement("div");
             header.setAttribute("id",user_type+"_page_header");
             header.style.position = "absolute";
-            header.style.flex = "0 1 autp";
+            header.style.flex = "0 1 auto";
             header.style.order = "1";
             header.style.display = "flex";
             header.style.flexFlow = "column";

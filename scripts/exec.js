@@ -22,68 +22,118 @@ var exec = (function(){
     function _init_wrapper(){
         var $wrap = $body.find("#wrapper");
         $wrap.css({
-            "position":"absolute",
-            "width":width+"px",
-            "height":height+"px"
+            "display":"flex",
+            "flex-flow":"column nowrap",
+            "justify-content":"space-between",
+            "align-items":"flex-start",
+            "max-width":width+"px",
+            "min-height":height+"px"
         });
     }   
+    function _init_nav_options(){
+        var $nav_opts = $body.find("#nav_options");
+        $nav_opts.css({
+            "flex-grow":"3",
+            "order":"2",
+            "display":"flex",
+            "flex-flow":"row nowrap",
+            "justify-content":"space-around",
+            "align-items":"center","align-content":"center","min-height":1.5*(height*0.1)+"px"
+        });
+        $nav_opts.find('div').each(function(){
+            $(this).addClass('nav_buttons');
+            $(this).hover(function(){
+                $(this).css({
+                    "color": "#33ffff",
+                    "border": "1px solid #33ffff",
+                    "cursor": "all-scroll"
+                });
+            },function(){
+                $(this).css({
+                    "color": "white",
+                    "border": "1px solid white",
+                    "cursor": "auto"
+                });
+            });
+        });
+    }
     function _init_welcome(){
         var $wel = $body.find("#welcome");
-        $wel.text("welcome back, "+username);
         $wel.css({
-            "width":"20%",
-            "margin":((height*0.1)*0.1)+"px "+(width*0.1)+"px "+((height*0.1)*0.1)+"px "+(width*0.025)+"px"
+            "flex-grow":"1",
+            "order":"1",
+            "display":"flex",
+            "flex-flow":"row nowrap",
+            "justify-content":"flex-start",
+            "align-items":"center","align-content":"center","min-height":1.5*(height*0.1)+"px"
+        });
+        $wel.append("<div id='wel_inner_div'></div>");
+        var $wel_inn = $wel.find('#wel_inner_div');
+        $wel_inn.addClass('nav_buttons');
+        $wel_inn.text("welcome back, "+username);
+        $wel_inn.css({
+            "flex":"0 1 auto",
+            "order":"1",
+            "display":"flex",
+            "flex-flow":"row nowrap",
+            "justify-content":"space-around",
+            "align-items":"center","align-content":"flex-end"
         });
     } 
     function _init_nav(){
         var $nav = $body.find("#nav");
         $nav.css({
-            "position":"relative",
-            "width":width+"px",
-            "height":(height*0.1)+"px",
-            "top":(-height*0.1)+"px",
-            "left":"0px",
+            "flex":"1",
+            "order":"1",
+            "min-width":width+"px",
+            "max-height":(height*0.1)+"px",
             "background-color":"black",
-            "padding-bottom":"2vh"
+            "display":"flex",
+            "flex-flow":"row nowrap",
+            "justify-content":"flex-start",       
+            "align-items":"center",
+            "align-content":"stretch"
         });
-        $nav.find("div").addClass("nav_buttons");
-        $nav.find("div:first-child").nextAll().css({"width":"10%"});
-        $nav.animate({"top":"0px"},500);
+        _init_welcome();
+        _init_nav_options();
     }
     function _init_backgrounds(){
         $content = $body.find("#content_background");
         $loader = $body.find("#loader");
         $panel = $body.find("#side_panel");
         $content.css({
-            "position":"absolute",
-            "width":width+"px",
-            "height":(height*0.9)+"px",
-            "z-index":"-1"
+            "flex":"0 1 auto",
+            "order":"2",
+            "min-width":width+"px",
+            "max-height":(height*0.9)+"px",
+            "display":"flex",
+            "flex-flow":"row nowrap",
+            "justify-content":"space-around",
+            "align-items":"center",
+            "align-content":"center"
         });
         $loader.css({
-            "position":"absolute",
+            "flex":"0 1 auto",
+            "order":"1",
             "background-color": "#33ffff",
             "border-radius": "5px",
-            "left":(width*0.025)+"px",
-            "top":(height*0.05)+"px",
             "display":"flex",
             "flex-flow":"column",
             "justify-content":"flex-start",
             "align-items":"flex-start",
-            "min-width":(width*0.7)+"px",
-            "min-height":(height*0.8)+"px",
+            "width":(width*0.7)+"px",
+            "height":(height*0.8)+"px",
             "opacity":"0"
         });
         $loader.animate({"opacity":"1"},750);
         $panel.css({
-            "position":"fixed",
+            //"position":"fixed",
+            "flex":"0 1 auto",
+            "order":"2",
             "width":(width*0.215)+"px",
             "height":(height*0.8)+"px",
-            "left":(width*0.775)+"px",
-            "top":(height*0.17)+"px",
             "background-color": "#33ffff",
             "border-radius": "5px",
-            "display": "inline-block",
             "opacity":"0"
         });
         $panel.animate({"opacity":"1"},750);
@@ -356,7 +406,6 @@ var exec = (function(){
     }
     function _init_page(){
         _init_wrapper();
-        _init_welcome();
         _init_nav();
         _init_backgrounds();
         _init_foreground();

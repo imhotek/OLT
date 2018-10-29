@@ -36,3 +36,7 @@
     font: 2vh bold,black,tahoma;
     color: black;
 }
+
+.address,.from,.to,.employer,.phone,.position,.type,.endorsements,.exp_date,.date,.location,
+.reason,.regs,.cfr,.vclass,.yrs,.miles,.states,.state,.num,.lic_num,.training,.num_fts,num_injrs,
+.awards,.deny,.suspend,.felony,.charge,.penalty{}

@@ -11,12 +11,10 @@ body{
 .nav_buttons{
     border-radius: 5px;
     border: 1px solid white;
-    height: 50%;
-    padding: 2vh 0vw;
-    display: inline-block;
-    font: 3vh bold tahoma;
+    font: 175% bold tahoma;
     color: white;
     text-align: center;
+    padding: 1%
 }
 
 div.nav_buttons:hover{
