@@ -6,8 +6,8 @@ var exec = (function(){
     var width = window.innerWidth;
     var height = window.innerHeight;
     var $body = $("body");
-    var $content, $loader, $panel;
-    var $media_wrapper = null;
+    var $content, $loader, $panel, $fore_content, $media_wrapper;
+    $media_wrapper = $fore_content = null;
     var $panel_wrapper = null;
     var player_deployed = false;
     var panel_deployed = false;
@@ -125,18 +125,13 @@ var exec = (function(){
         $panel.animate({"opacity":"1"},750);
     }
     function _init_foreground(){
-        var $content = $body.find("#content_foreground");
-        $content.css({
-            "flex":"0 1 auto",
-            "order":"2",
-            "min-width":width+"px",
-            "max-height":(height*0.9)+"px",
-            "display":"flex",
-            "flex-flow":"row nowrap",
-            "justify-content":"space-around",
-            "align-items":"center",
-            "align-content":"center",
-            "z-index":"10"
+        $fore_content = $body.find("#content_foreground");
+        $fore_content.css({
+            "position":"absolute",
+            "width":width+"px",
+            "height":(height*0.9)+"px",
+            "top":(height*0.1)+"px",
+            "z-index":"-1"
         });
     }
     function _init_media(){
@@ -144,35 +139,28 @@ var exec = (function(){
         var $screen = $body.find("#screen");
         var $control_panel = $body.find("#control_panel");   
         $media_wrapper.css({
-            "flex":"0 1 auto",
-            "order":"1",
+            "position":"absolute",
+            "display":"block",
             "background-color": "#33ffff",
             "border-radius": "5px",
-            "display":"flex",
-            "flex-flow":"column",
-            "justify-content":"center",
-            "align-items":"center",
             "width":(width*0.7)+"px",
-            "height":(height*0.8)+"px"
+            "height":(height*0.8)+"px",
+            "left":0-(width*0.7)+"px",
+            "top":(height*0.1)+"px"
         });
         ctx = $screen.find("canvas")[0].getContext("2d");
         $screen.css({
-            "flex":"0 1 auto",
-            "order":"1",
+            "position":"relative",
             "width":(width*0.7)+"px",
             "height":((height*0.8)*0.85)+"px"
         });
         $control_panel.css({
-            "flex":"0 1 auto",
-            "order":"2",
-            "display":"flex",
-            "flex-flow":"row nowrap",
-            "justify-content":"center",
-            "align-items":"center",
-            "align-content":"flex-end",
+            "position":"relative",
+            "display":"inline-block",
             "width":(width*0.7)+"px",
             "height":((height*0.8)*0.15)+"px",
-            "background-color":"#A9A9A9"
+            "background-color":"#A9A9A9",
+            "text-align":"center"
         });
     }
     function _set_control_dimens(elem){
@@ -228,14 +216,17 @@ var exec = (function(){
     }
     function _init_panel(){  
         $panel_wrapper = $body.find("#panel"); 
-        $panel_wrapper.css({"flex":"0 1 auto",
-            "order":"2",
+        $panel_wrapper.css({
+            "position":"fixed",
+            "display":"block",
+            "padding-top":((height*0.8)*0.00625)+"px",
             "width":(width*0.215)+"px",
             "height":(height*0.8)+"px",
-            "border-radius": "5px",
+            "left":width+"px",
+            "top":(height*0.2)+"px",
+            "border-radius":"5px",
             "background-color":"black"
-        });
-        
+        });        
     }
     function _add_details(obj){
         var details = document.createElement("div");
@@ -329,7 +320,8 @@ var exec = (function(){
     }
     function _deploy_panel(str){
         if(!panel_deployed){
-            $panel_wrapper.animate({"left":(width*0.775)+"px"});
+            $body.find("#side_panel").animate({"opacity":"0"},750);
+            $panel_wrapper.animate({"left":(width*0.7625)+"px"});
             if(str === "applicants"){
                 _set_applicant_content();
             }else{
@@ -340,6 +332,7 @@ var exec = (function(){
     }
     function _retract_panel(){
         if(panel_deployed){
+            $body.find("#side_panel").animate({"opacity":"1"},750);
             $panel_wrapper.animate({"left":width+"px"});
             _remove_content();
             panel_deployed = false;
@@ -379,13 +372,17 @@ var exec = (function(){
     }
     function _deploy_media_player(){
         if(!player_deployed){
-            $media_wrapper.animate({"left":(width*0.025)+"px"},500);
+            $loader.animate({"opacity":"0"},750);
+            $fore_content.css({"z-index":"20"});
+            $media_wrapper.animate({"left":(width*0.0225)+"px"},500);
             player_deployed = true;
         }
     }
     function _retract_media_player(){
         if(player_deployed){
+            $loader.animate({"opacity":"1"},750);
             $media_wrapper.animate({"left":0-(width*0.7)+"px"},500);
+            $fore_content.css({"z-index":"-1"});
             player_deployed = false;
         }
     }

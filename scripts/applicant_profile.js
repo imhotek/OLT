@@ -904,7 +904,6 @@ function Applicant_Profile(ref){
             body.style.flexFlow = "column";
             body.style.justifyContent = "flex-start";
             body.style.alignItems = "flex-start";
-            body.style.border = "2px solid red";
             body.style.maxWidth = (window.innerWidth*0.7)+"px"; 
             this._set_res_hist();
             this._set_edu();
