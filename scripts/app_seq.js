@@ -2175,7 +2175,7 @@ var Questions = {
 "                    <button id='add_button' style='text-align: center'>add</button>"+
 "                </div>"+
 "                <div id='states' class='q4_div'><label>Press 'ctrl' key to select multiple states operated in for the last five years</label>"+
-"                    <select id='states' multiple>"+
+"                    <select id='state_sel' multiple>"+
 "                        <option value='1'>Alabama</option>"+
 "                        <option value='2'>Alaska</option>"+
 "                        <option value='3'>Arizona</option>"+
@@ -2244,7 +2244,7 @@ var Questions = {
             var equip_class = ref.$outer.find("#equip_class");
             var num_miles = ref.$outer.find("#num_miles");
             var add = ref.$outer.find("#add_button");
-            var states = ref.$outer.find("#states");
+            var states = ref.$outer.find("#state_sel");
             var courses = ref.$outer.find("#courses");
             var awards = ref.$outer.find("#awards");
             var from_mo = ref.$outer.find('.from_month');
@@ -2256,7 +2256,7 @@ var Questions = {
             
             function _populate(obj){
                 var len = 0;
-                if(obj['experience']['vehicles_array']){
+                if(obj['experience']['vehicles_array'] && obj['experience']['vehicles_array'].length > 0){
                    obj['experience']['vehicles_array'].forEach(function(item){
                        experience.vehicles_array.push(item);   
                        len++;
@@ -2281,10 +2281,10 @@ var Questions = {
                    }
                 }
                 len = 0;
-                if(obj['experience']['states']){
+                if(obj['experience']['states'] && obj['experience']['states'].length > 0){
                    obj['experience']['states'].forEach(function(item){
                        experience.states.push(item);
-                       ref.$outer.find('#states').find('option[text="'+item+'"]').prop('selected',true);
+                       ref.$outer.find('#state_sel').find('option[text="'+item+'"]').prop('selected',true);
                    }); 
                 }
                 if(obj['experience']['special_training'] && obj['experience']['special_training'].length > 0){
@@ -2634,7 +2634,95 @@ var Questions = {
                     acc_add[0].disabled = true;
                 }
             });
-            
+            function _populate_acc(obj){
+                if(obj["accidents"] && obj["accidents"].length > 0){
+                    var acc_date = '';
+                    var type = '';
+                    var loc = '';
+                    var fats, injur;fats=injur='';
+                    obj["accidents"].forEach(function(item,index){
+			acc_date += item["date"];
+			type += item["type"];
+			var len = Object.keys(item["location"]).length;
+			for(var i = 0; i < len; i++){
+				if(len > 4){
+					if(i === 0){
+						loc += item["location"][i]["long_name"]+" ";		
+					}else if(i === 2 || i === 4){}
+					else if(i > 0 && i < 7){
+						loc += item["location"][i]["long_name"]+", ";
+					}else if(i === 7){
+						loc += item["location"][i]["long_name"];
+					}else if(i === 8 && item["location"][i]["long_name"]){
+						loc += ("-"+ item["location"][i]["long_name"]);
+					}
+				}else{
+					if(i === 0 || i === 2){
+						loc += item["location"][i]["long_name"]+", ";		
+					}else if(i === 3){
+						loc += item["location"][i]["long_name"];
+					}
+				}	
+			}
+			fats += item["num_fatalities"];
+			injur +=  item["num_injuries"];
+                        window.accidents_and_convictions.accidents.push(item);
+                        acc_loc.val(loc);
+                        Application_Sequence.populate_date_cells(acc_date,"#acc_yr","#acc_mo","#acc_day",4);
+                        acc_type.val(type);
+                        fatalities.val(fats);
+                        injuries.val(injur);
+                        acc_date = '';
+			type = '';
+			loc = '';
+			fats = '';
+			injur = '';
+		});
+                }
+            }
+            function _populate_con(obj){
+                if(obj["convictions"] && obj["convictions"].length > 0){
+                    var acc_date = '';
+                    var loc = '';
+                    var charge = '';var pen = '';
+                    obj["convictions"].forEach(function(item,index){
+			acc_date += item["date"];
+			var len = Object.keys(item["location"]).length;
+			for(var i = 0; i < len; i++){
+				if(len > 4){
+					if(i === 0){
+						loc += item["location"][i]["long_name"]+" ";		
+					}else if(i === 2 || i === 4){}
+					else if(i > 0 && i < 7){
+						loc += item["location"][i]["long_name"]+", ";
+					}else if(i === 7){
+						loc += item["location"][i]["long_name"];
+					}else if(i === 8 && item["location"][i]["long_name"]){
+						loc += ("-"+ item["location"][i]["long_name"]);
+					}
+				}else{
+					if(i === 0 || i === 2){
+						loc += item["location"][i]["long_name"]+", ";		
+					}else if(i === 3){
+						loc += item["location"][i]["long_name"];
+					}
+				}	
+			}
+                        window.accidents_and_convictions.convictions.push(item);
+			charge += item["charge"];
+                        con_charge.val(charge);
+			pen +=  item["penalty"];
+                        penalty.val(pen);
+                        Application_Sequence.populate_date_cells(acc_date,"#con_yr","#con_mo","#con_day",4);
+                        acc_loc.val(loc);
+                        acc_date = '';
+			loc = '';
+			charge = '';
+			pen = '';
+		});
+                }
+                
+            }
             (function(){ 
                 date_filler.fillMonths(acc_mo,1,12);
                 date_filler.fillYears(acc_yr,2014,2018);
@@ -2648,6 +2736,8 @@ var Questions = {
                 penalty[0].disabled = true;
                 con_done[0].disabled = true;
                 con_add[0].disabled = true; 
+                _populate_acc(Questions["4"].user_ref);
+                _populate_con(Questions["4"].user_ref);
             })();
             window.accidents_done = false;
             window.convictions_done = false;
