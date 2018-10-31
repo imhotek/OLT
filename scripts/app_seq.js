@@ -2276,6 +2276,9 @@ var Questions = {
                        }
                        Application_Sequence.populate_date_cells(d_str,'.to_year','.to_month','.to_day',3);
                    }
+                   if(_get_total() >= 10){
+                       ref.$outer.find('#class_of_equip').find('input,select,button').each(function(){$(this).prop('disabled',true);});
+                   }
                 }
                 len = 0;
                 if(obj['experience']['states']){
@@ -2283,6 +2286,12 @@ var Questions = {
                        experience.states.push(item);
                        ref.$outer.find('#states').find('option[text="'+item+'"]').prop('selected',true);
                    }); 
+                }
+                if(obj['experience']['special_training'] && obj['experience']['special_training'].length > 0){
+                    ref.$outer.find('#courses').val(obj['experience']['special_training']);
+                }
+                if(obj['experience']['awards'] && obj['experience']['awards'].length > 0){
+                    ref.$outer.find('#awards').val(obj['experience']['awards']);
                 }
             }
             (function(){ 

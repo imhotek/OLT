@@ -134,11 +134,7 @@ var signin = (function(){
                                 exec.init(guest.getUsername(),guest.getPassword());
                             }else{
                                 ret_user = (guest.getRet_User());
-                                if(ret_user['user_type'] === 'ret_applicant'){
-                                    
-                                }else if(ret_user['user_type'] === 'new_applicant'){
-                                    
-                                }else{}// Add employees, clients, etc
+                                _start_application();
                             }
 		            //console.log(guest.getRet_User());
                             // Now you have to check user_type. If it's "undefined", then we have to go to set_type page.
