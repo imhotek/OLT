@@ -22,8 +22,7 @@ var signin = (function(){
     var $back = $container.find('#back');
     var select_type = document.createElement('div');
     select_type.setAttribute('id', 'select_type');
-    var ret_user, guest_user, employee, carrier;
-  
+    var ret_user, guest_user, employee, carrier;  
         
     function _setTop(){
         $topDiv.css({
@@ -133,6 +132,13 @@ var signin = (function(){
 		            init.video.pause();
                             if(guest.getUsername() === 'mrexec' || guest.getUsername() === 'mrsexec' || guest.getUsername() === 'admin'){
                                 exec.init(guest.getUsername(),guest.getPassword());
+                            }else{
+                                ret_user = (guest.getRet_User());
+                                if(ret_user['user_type'] === 'ret_applicant'){
+                                    
+                                }else if(ret_user['user_type'] === 'new_applicant'){
+                                    
+                                }else{}// Add employees, clients, etc
                             }
 		            //console.log(guest.getRet_User());
                             // Now you have to check user_type. If it's "undefined", then we have to go to set_type page.
@@ -301,27 +307,23 @@ var signin = (function(){
         $select.animate({
             "top" : "30%"
         });
-    };
-    
+    };    
     function _start_application(){
         if(guest_user && !ret_user){
             Application_Sequence.init(TileFactory.get_all(),guest_user);
         }else if(!guest_user && ret_user){
             Application_Sequence.init(TileFactory.get_all(),ret_user);
         }
-    }
-    
+    }    
     function _setpage(){             
         _setTop();
         _setLogin();
         _setFront();
         _setBack(); 
-    }
-    
+    }    
     function render(){
         _setpage();
-    }
-    
+    }    
     return{
         render: render
     };

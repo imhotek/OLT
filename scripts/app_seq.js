@@ -129,6 +129,7 @@ var Questions = {
                 Application_Sequence.retract(ref);
                 ref.running = false;
                 handle = null;
+                Logger.LOG('out',Questions["0"].user_ref.getUsername());
             };
             events.on('on_window_close',save_and_close);
             save.click(function(){
@@ -1422,6 +1423,7 @@ var Questions = {
                 save_and_close();
                 clearIntervals();
                 remove_window_objects();
+                Logger.LOG('out',Questions["1"].user_ref.getUsername());
                 window.location.href = "index.html";
             });
         },
@@ -1467,7 +1469,12 @@ var Questions = {
                 pre_request.send(JSON.stringify(size_obj));
             };
             var exam_error_string = "";
-	    var year_accum = 0;
+	    var year_accum, sum;
+            year_accum = sum = 0;
+            while(Questions["1"].user_ref['addresses'][sum]){
+                year_accum = (Questions["1"].user_ref['addresses'][sum]['total_time']) ? (year_accum+Questions["1"].user_ref['addresses'][sum]['total_time']) : (year_accum + 0);
+                sum++;
+            }
 	    var error_string = "";
             var ref = (arguments.length>1) ? arguments[1] : arguments[0];
 	    var exam_date = (function(){
@@ -1489,7 +1496,7 @@ var Questions = {
             })();
             var collect_addrs = function(){
                         for(var i = 0 ; i < 4; i++){
-                            
+                            if(Questions["1"].user_ref['addresses'][i])continue;
                             if(typeof window.address_errors['0'] === 'undefined' || !window.address_errors['0']['valid']){
                                 error_string = "The Current Address field is either blank or invalid.\n";
                                 break;
@@ -3250,21 +3257,171 @@ var Application_Sequence = (function(){
     
     var tile_ref;
     var user_ref;
-    
+    function _populate_date_cells(d_str,yid,mid,did,index){
+        var date = d_str.split('-');
+        if(date.length > 0){
+            var yr = (date[1].length > 0 && date[1].toUpperCase() !== "null".toUpperCase()) ? date[1] : null;
+            var mo = (date[0].length > 0 && date[0].toUpperCase() !== "null".toUpperCase()) ? date[0]-1 : null;
+            var mo_day = (date[2].length > 0 && date[2].toUpperCase() !== "null".toUpperCase()) ? date[2] : null;
+            if(yr !== null)tile_ref[index].$outer.find('#'+yid).val(yr).prop('selected',true);
+            if(mo !== null)tile_ref[index].$outer.find('#'+mid).val(mo).prop('selected',true);
+            if(mo_day !== null)tile_ref[index].$outer.find('#'+did).val(mo_day).prop('selected',true);
+            if(yr !== null && mo !== null && mo_day !== null)return true;
+            else return false;
+        }
+    }
+    function _populate_pg5(){}
+    function _populate_pg4(){}
+    function _populate_pg3(){}
+    function _populate_pg2(){
+        var grade = (isNaN(parseInt(user_ref['grade_school']))) ? 'null':user_ref['grade_school'];
+        var col = (isNaN(parseInt(user_ref['college']))) ? 'null':(user_ref['college']+1);
+        var grad = (isNaN(parseInt(user_ref['grad_school']))) ? 'null':user_ref['grad_school'];
+        var res = col+'-'+grade+'-'+grad;
+        _populate_date_cells(res,'grade','college','grad',2);
+        for(var i = 0;;i++){
+            if(user_ref['employers'][i]){
+                continue;
+            }else{
+                if(i === 0)return;
+                
+            }
+        }
+    }
+    function _populate_pg1(){//This may require some tweaking
+        if(user_ref['address_completed'] === 'T' && _populate_date_cells(user_ref['last_phys_exam'],'year','month','month_day',1)){
+            tile_ref[1].run_me = true;
+            return;
+        }else{
+            for(var i = 0; ;i++){
+                switch(i%4){
+                        case 0:
+                            if(user_ref['addresses'][i]){
+                                tile_ref[1].$outer.find('#current').val(user_ref['addresses'][i]['postal_format']);
+                                _populate_date_cells(user_ref['addresses'][i]['from'],'current_from_year','current_from_month','current_from_day',1);
+                                _populate_date_cells(user_ref['addresses'][i]['to'],'current_to_year','current_to_month','current_to_day',1);
+                            }else return;
+                            break;
+                        case 1:
+                            if(user_ref['addresses'][i]){
+                                tile_ref[1].$outer.find('#first').val(user_ref['addresses'][i]['postal_format']);
+                                _populate_date_cells(user_ref['addresses'][i]['from'],'first_from_year','first_from_month','first_from_day',1);
+                                _populate_date_cells(user_ref['addresses'][i]['to'],'first_to_year','first_to_month','first_to_day',1);
+                            }else return;
+                            break; 
+                        case 2:
+                            if(user_ref['addresses'][i]){
+                                tile_ref[1].$outer.find('#second').val(user_ref['addresses'][i]['postal_format']);
+                                _populate_date_cells(user_ref['addresses'][i]['from'],'second_from_year','second_from_month','second_from_day',1);
+                                _populate_date_cells(user_ref['addresses'][i]['to'],'second_to_year','second_to_month','second_to_day',1);
+                            }else return;
+                            break; 
+                        case 3:
+                            if(user_ref['addresses'][i]){
+                                tile_ref[1].$outer.find('#third').val(user_ref['addresses'][i]['postal_format']);
+                                _populate_date_cells(user_ref['addresses'][i]['from'],'third_from_year','third_from_month','third_from_day',1);
+                                _populate_date_cells(user_ref['addresses'][i]['to'],'third_to_year','third_to_month','third_to_day',1);
+                            }else return;
+                            break; 
+                }
+            }
+        }
+    }
+    function _populate_pg0(){
+        var t_ref = tile_ref[0].$outer;
+        var pos = user_ref['position'];
+        if(t_ref.find('#contractor').attr('value').toUpperCase() === pos.toUpperCase()){
+            t_ref.find('#contractor').prop('checked',true);
+        }else if(t_ref.find('#driver').attr('value').toUpperCase() === pos.toUpperCase()){
+            t_ref.find('#driver').prop('checked',true);
+        }else if(t_ref.find('#c_driver').attr('value').toUpperCase() === pos.toUpperCase()){
+            t_ref.find('#c_driver').prop('checked',true);
+        }
+        if(user_ref['first_name'].length > 0 && user_ref['first_name'].toUpperCase() !== "null".toUpperCase()){
+            t_ref.find('#f_name').val(user_ref['first_name']);
+        }
+        if(user_ref['middle_name'].length > 0 && user_ref['middle_name'].toUpperCase() !== "null".toUpperCase()){
+            t_ref.find('#m_name').val(user_ref['middle_name']);
+        }
+        if(user_ref['last_name'].length > 0 && user_ref['last_name'].toUpperCase() !== "null".toUpperCase()){
+            t_ref.find('#l_name').val(user_ref['last_name']);
+        }
+        if(user_ref['phone'].length > 0 && user_ref['phone'].toUpperCase() !== "null".toUpperCase()){
+            t_ref.find('#p_num').val(user_ref['phone']);
+        }
+        if(user_ref['emergency_phone'].length > 0 && user_ref['emergency_phone'].toUpperCase() !== "null".toUpperCase()){
+            t_ref.find('#e_num').val(user_ref['emergency_phone']);
+        }
+        if(user_ref['phone_type']){
+            if(user_ref['phone_type'] === "cell"){
+                t_ref.find('#phone_type_cell').prop('checked',true);
+            }else{
+                t_ref.find('#phone_type_land').prop('checked',true);
+            }            
+        }
+        if(user_ref['emergency_phone_type']){
+            if(user_ref['emergency_phone_type'] === "cell"){
+                t_ref.find('#emergency_type_cell').prop('checked',true);
+            }else{
+                t_ref.find('#emergency_type_land').prop('checked',true);
+            }            
+        }
+        _populate_date_cells(user_ref['dob'],'year','month','month_day',0);
+        if(user_ref['age']){
+            t_ref.find('#age').val(user_ref['age']);
+        }
+        if(user_ref['ssn']){
+            t_ref.find('#ssn').val(user_ref['ssn']);
+        }
+        if(user_ref['email']){
+            t_ref.find('#email').val(user_ref['email']);
+        }
+    }
+    function _populate(counter){
+        switch(counter){
+            case 0:
+                _populate_pg0();
+                break;
+            case 1:
+                _populate_pg1();
+                break; 
+            case 2:
+                _populate_pg2();
+                break;
+            case 3:
+                _populate_pg3();
+                break; 
+            case 4:
+                _populate_pg4();
+                break;
+            case 5:
+                _populate_pg5();
+                break; 
+        }
+    }
     function init(tiles,user){
        tile_ref = tiles;
        user_ref = user;
-       tile_ref.forEach(function(item){
+       var counter = 0;
+       var last_pg = user_ref['last_page_completed'];
+       tile_ref.forEach(function(item,index){
+           if(index < last_pg){
+               item.run_me = true;
+               item.running = false;
+           }
            if(!item.run_me){
                item.$outer.find("#"+item.id).removeClass('stop');
                item.$outer.find("#"+item.id).addClass('wait');
+           }else{
+               item.$outer.find("#"+item.id).removeClass('stop');
            }
+           counter = index;
        });
-       var counter = 0;
        var handle = setInterval(function(){
            if(!tile_ref[counter].running && !tile_ref[counter].run_me){
                tile_ref[counter].running = true;
                deploy(tile_ref[counter]);
+               _populate(counter);
            }else if(!tile_ref[counter].running && tile_ref[counter].run_me){
                counter +=1;
                if(counter >= tile_ref.length){

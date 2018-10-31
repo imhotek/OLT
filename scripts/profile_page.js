@@ -245,13 +245,6 @@ function Profile_Page(ref,userType){
                 $outer.find("#"+user_type+"_page_header").remove();
             });
         },
-        _deploy_page: function(){
-            /*
-            $outer.find("#"+user_type+"_page").animate({
-                "height":height
-            },1500);
-            this._deploy_header();*/
-        },
         _retract_page: function(){
             $outer.find("#"+user_type+"_page").animate({
                 "height":"0px"
@@ -265,7 +258,6 @@ function Profile_Page(ref,userType){
         },
         init: function(){
             this._set_page();
-            this._deploy_page();
         }        
     };
     return obj;

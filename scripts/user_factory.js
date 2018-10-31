@@ -81,7 +81,18 @@ var User_Factory = (function(){
             return user.last_physical_exam;
         };
         user.setAddresses = function(addr){
-            user.addresses = addr;//Object.create(addr);
+            var i,j;
+            i = j = 0;
+            for(;;i++){
+                if(user.addresses[i] && addr[j]){
+                    continue;
+                }else if(!user.addresses[i] && addr[j]){
+                    user.addresses[i] = addr[j];
+                    j++;
+                }else if(user.addresses[i] && !addr[j]){
+                    return;
+                }
+            }
         };
         user.getAddresses = function(){
             return user.addresses;

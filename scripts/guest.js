@@ -9,7 +9,7 @@ var guest = (function(){
     var result = null;
     
     function setRet_User(obj){ 
-        ret_user = Object.create(JSON.parse(obj));
+        ret_user = JSON.parse(obj);
         setType(ret_user["user_type"]);
         // So now, when this object is passed to User_Factory.init() in signin.js, the switch statement within that init() function
         // can call getType() on this object and return what "user_type" got pulled from the database. Then it can 
@@ -117,7 +117,7 @@ var guest = (function(){
                             alert(error_string);
                             setResult(false);
                         }else{
-                            setRet_User(request.responseText);
+                            setRet_User(JSON.stringify(request.responseText));
                             setResult(true);
                         }
                     }

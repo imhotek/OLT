@@ -1,8 +1,8 @@
 'use strict';
 
-function New_Applicant(uname){
+function New_Applicant(user){
     var $outer,width,height;
-    var username = uname;
+    var user_ref = user;
     
     var obj = {
         _createXMLHttpRequest:function(){

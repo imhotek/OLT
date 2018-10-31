@@ -1,7 +1,6 @@
 'use strict';
 
 var exec = (function(){
-    
     var username, password;
     var width = window.innerWidth;
     var height = window.innerHeight;
