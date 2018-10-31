@@ -1916,6 +1916,7 @@ var Questions = {
             
             (function(){ 
                 date_filler.set_dates(from_mo,from_yr,from_day,to_mo,to_yr,to_day,new Date());
+                window.year_accum = 0;
             })();
             
             date_filler.fillGrades(grade_school,1,12);
@@ -2253,6 +2254,42 @@ var Questions = {
             var to_yr = ref.$outer.find('.to_year');
             var to_day = ref.$outer.find('.to_day');
             
+            function _populate(obj){
+                var len = 0;
+                if(obj['experience']['vehicles_array']){
+                   obj['experience']['vehicles_array'].forEach(function(item){
+                       experience.vehicles_array.push(item);   
+                       len++;
+                   }); 
+                   if(len === 0){}else{
+                       ref.$outer.find('#equip_class').find('option[text="'+experience.vehicles_array[len-1].vehicle_class+'"]').prop('selected',true);
+                       var miles = (isNaN(parseInt(experience.vehicles_array[len-1].total_miles)))?false:true;
+                       if(miles)ref.$outer.find('#num_miles').val(experience.vehicles_array[len-1].total_miles);
+                       var date = new Date(experience.vehicles_array[len-1].from);
+                       if(date){
+                           var d_str = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate();
+                       }
+                       Application_Sequence.populate_date_cells(d_str,'.from_year','.from_month','.from_day',3);
+                       date = new Date(experience.vehicles_array[len-1].to);
+                       if(date){
+                           var d_str = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate();
+                       }
+                       Application_Sequence.populate_date_cells(d_str,'.to_year','.to_month','.to_day',3);
+                   }
+                }
+                len = 0;
+                if(obj['experience']['states']){
+                   obj['experience']['states'].forEach(function(item){
+                       experience.states.push(item);
+                       ref.$outer.find('#states').find('option[text="'+item+'"]').prop('selected',true);
+                   }); 
+                }
+            }
+            (function(){ 
+                date_filler.set_dates(from_mo,from_yr,from_day,to_mo,to_yr,to_day,new Date());
+                _populate(Questions["3"].user_ref);
+            })();
+            
             function vehicles(){
                 var obj = {
                     vehicle_class:'',
@@ -2306,10 +2343,6 @@ var Questions = {
                 }
             }
             
-            (function(){ 
-                date_filler.set_dates(from_mo,from_yr,from_day,to_mo,to_yr,to_day,new Date());
-            })();
-            
             add.click(function(){
                 var error_string = null;
                 var obj = new vehicles();
@@ -2348,10 +2381,11 @@ var Questions = {
             function _write_to_file(){
                 experience.username = Questions["3"].user_ref.getUsername();
                 states.find("option:selected").each(function(){
-                    experience.states.push($(this).text());
+                    if((experience.states.indexOf($(this).text())) < 0)
+                        experience.states.push($(this).text());
                 });
-                experience.special_training = courses.val().trim();
-                experience.awards = awards.val().trim();
+                experience.special_training = experience.special_training||courses.val().trim();
+                experience.awards = experience.awards||awards.val().trim();
                 var pre_request = _createXMLHttpRequest();
                 var data = JSON.stringify(experience);
                 var len = data.length;
@@ -3260,32 +3294,55 @@ var Application_Sequence = (function(){
     function _populate_date_cells(d_str,yid,mid,did,index){
         var date = d_str.split('-');
         if(date.length > 0){
-            var yr = (date[1].length > 0 && date[1].toUpperCase() !== "null".toUpperCase()) ? date[1] : null;
-            var mo = (date[0].length > 0 && date[0].toUpperCase() !== "null".toUpperCase()) ? date[0]-1 : null;
+            var yr = (date[0].length > 0 && date[0].toUpperCase() !== "null".toUpperCase()) ? date[0] : null;
+            var mo = (date[1].length > 0 && date[1].toUpperCase() !== "null".toUpperCase()) ? date[1]-1 : null;
             var mo_day = (date[2].length > 0 && date[2].toUpperCase() !== "null".toUpperCase()) ? date[2] : null;
-            if(yr !== null)tile_ref[index].$outer.find('#'+yid).val(yr).prop('selected',true);
-            if(mo !== null)tile_ref[index].$outer.find('#'+mid).val(mo).prop('selected',true);
-            if(mo_day !== null)tile_ref[index].$outer.find('#'+did).val(mo_day).prop('selected',true);
+            if(yr !== null)tile_ref[index].$outer.find(yid).val(yr).prop('selected',true);
+            if(mo !== null)tile_ref[index].$outer.find(mid).val(mo).prop('selected',true);
+            if(mo_day !== null)tile_ref[index].$outer.find(did).val(mo_day).prop('selected',true);
             if(yr !== null && mo !== null && mo_day !== null)return true;
             else return false;
         }
     }
-    function _populate_pg5(){}
-    function _populate_pg4(){}
-    function _populate_pg3(){}
     function _populate_pg2(){
         var grade = (isNaN(parseInt(user_ref['grade_school']))) ? 'null':user_ref['grade_school'];
         var col = (isNaN(parseInt(user_ref['college']))) ? 'null':(user_ref['college']+1);
         var grad = (isNaN(parseInt(user_ref['grad_school']))) ? 'null':user_ref['grad_school'];
         var res = col+'-'+grade+'-'+grad;
-        _populate_date_cells(res,'grade','college','grad',2);
-        for(var i = 0;;i++){
+        var t_f = _populate_date_cells(res,'grade','college','grad',2);
+        if(t_f)
+            tile_ref[2].find('#education').find('select').each(function(){
+                $(this).prop('disabled',true);
+            });
+        for(var i = 0; ;i++){
             if(user_ref['employers'][i]){
-                continue;
+                window.employer_details[i] = user_ref['employers'][i];
+                window.year_accum += (parseFloat(user_ref['employers'][i]['total_time']));
             }else{
-                if(i === 0)return;
-                
+                window.employer_counter = i;
+                break;
             }
+        }
+        if(window.year_accum >= 3 && window.employer_counter > 0){
+            tile_ref[2].find('#employer_name').val(user_ref['employers'][window.employer_counter-1]['employer']);
+            tile_ref[2].find('#employer_address').val(user_ref['employers'][window.employer_counter-1]['postal_address']);
+            tile_ref[2].find('#employer_phone').val(user_ref['employers'][window.employer_counter-1]['phone']);
+            tile_ref[2].find('#employer').find('input').each(function(){
+                $(this).prop('disabled',true);
+            });
+            var t_f1 = _populate_date_cells(user_ref['employers'][window.employer_counter-1]['from'],'.from_year','.from_month','.from_day',2);
+            var t_f2 = _populate_date_cells(user_ref['employers'][window.employer_counter-1]['to'],'.to_year','.to_month','.to_day',2);
+            if(t_f1 && t_f2){
+                tile_ref[2].find('#prev_emp_dates').find('select').each(function(){
+                    $(this).prop('disabled',true);
+                });
+            }
+        }else if(window.year_accum < 3 && window.employer_counter > 0){
+            tile_ref[2].find('#employer_name').val(user_ref['employers'][window.employer_counter-1]['employer']);
+            tile_ref[2].find('#employer_address').val(user_ref['employers'][window.employer_counter-1]['postal_address']);
+            tile_ref[2].find('#employer_phone').val(user_ref['employers'][window.employer_counter-1]['phone']);;
+            _populate_date_cells(user_ref['employers'][window.employer_counter-1]['from'],'.from_year','.from_month','.from_day',2);
+            _populate_date_cells(user_ref['employers'][window.employer_counter-1]['to'],'.to_year','.to_month','.to_day',2);            
         }
     }
     function _populate_pg1(){//This may require some tweaking
@@ -3298,29 +3355,29 @@ var Application_Sequence = (function(){
                         case 0:
                             if(user_ref['addresses'][i]){
                                 tile_ref[1].$outer.find('#current').val(user_ref['addresses'][i]['postal_format']);
-                                _populate_date_cells(user_ref['addresses'][i]['from'],'current_from_year','current_from_month','current_from_day',1);
-                                _populate_date_cells(user_ref['addresses'][i]['to'],'current_to_year','current_to_month','current_to_day',1);
+                                _populate_date_cells(user_ref['addresses'][i]['from'],'#current_from_year','#current_from_month','#current_from_day',1);
+                                _populate_date_cells(user_ref['addresses'][i]['to'],'#current_to_year','#current_to_month','#current_to_day',1);
                             }else return;
                             break;
                         case 1:
                             if(user_ref['addresses'][i]){
                                 tile_ref[1].$outer.find('#first').val(user_ref['addresses'][i]['postal_format']);
-                                _populate_date_cells(user_ref['addresses'][i]['from'],'first_from_year','first_from_month','first_from_day',1);
-                                _populate_date_cells(user_ref['addresses'][i]['to'],'first_to_year','first_to_month','first_to_day',1);
+                                _populate_date_cells(user_ref['addresses'][i]['from'],'#first_from_year','#first_from_month','#first_from_day',1);
+                                _populate_date_cells(user_ref['addresses'][i]['to'],'#first_to_year','#first_to_month','#first_to_day',1);
                             }else return;
                             break; 
                         case 2:
                             if(user_ref['addresses'][i]){
                                 tile_ref[1].$outer.find('#second').val(user_ref['addresses'][i]['postal_format']);
-                                _populate_date_cells(user_ref['addresses'][i]['from'],'second_from_year','second_from_month','second_from_day',1);
-                                _populate_date_cells(user_ref['addresses'][i]['to'],'second_to_year','second_to_month','second_to_day',1);
+                                _populate_date_cells(user_ref['addresses'][i]['from'],'#second_from_year','#second_from_month','#second_from_day',1);
+                                _populate_date_cells(user_ref['addresses'][i]['to'],'#second_to_year','#second_to_month','#second_to_day',1);
                             }else return;
                             break; 
                         case 3:
                             if(user_ref['addresses'][i]){
                                 tile_ref[1].$outer.find('#third').val(user_ref['addresses'][i]['postal_format']);
-                                _populate_date_cells(user_ref['addresses'][i]['from'],'third_from_year','third_from_month','third_from_day',1);
-                                _populate_date_cells(user_ref['addresses'][i]['to'],'third_to_year','third_to_month','third_to_day',1);
+                                _populate_date_cells(user_ref['addresses'][i]['from'],'#third_from_year','#third_from_month','#third_from_day',1);
+                                _populate_date_cells(user_ref['addresses'][i]['to'],'#third_to_year','#third_to_month','#third_to_day',1);
                             }else return;
                             break; 
                 }
@@ -3366,7 +3423,7 @@ var Application_Sequence = (function(){
                 t_ref.find('#emergency_type_land').prop('checked',true);
             }            
         }
-        _populate_date_cells(user_ref['dob'],'year','month','month_day',0);
+        _populate_date_cells(user_ref['dob'],'#year','#month','#month_day',0);
         if(user_ref['age']){
             t_ref.find('#age').val(user_ref['age']);
         }
@@ -3388,15 +3445,6 @@ var Application_Sequence = (function(){
             case 2:
                 _populate_pg2();
                 break;
-            case 3:
-                _populate_pg3();
-                break; 
-            case 4:
-                _populate_pg4();
-                break;
-            case 5:
-                _populate_pg5();
-                break; 
         }
     }
     function init(tiles,user){
@@ -3466,7 +3514,8 @@ var Application_Sequence = (function(){
     return{
       init:init,
       deploy:deploy,
-      retract:retract
+      retract:retract,
+      populate_date_cells:_populate_date_cells
     };
     
 })();
