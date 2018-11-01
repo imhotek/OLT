@@ -2967,6 +2967,39 @@ var Questions = {
             var submit = ref.$outer.find("#page6_submit_button");
             var save = ref.$outer.find("#page6_save_button");
             
+            function _populate(obj){
+                if(obj['licenses'] && obj['licenses'].length > 0){
+                    obj['licenses'].forEach(function(item){
+                        window.licenses.licenses.push(item);
+                        states.find("option[text='"+item['state']+"']").prop('selected',true);
+                        license_number.val(item['number']);
+                        license_type.val(item['type']);
+                        endorsements.val(item['endorsements']);
+                        Application_Sequence.populate_date_cells(item['expiration_date'],"#exp_yr","#exp_mo","#exp_day");
+                    });
+                }
+                if(obj['licenses']['denied_license'] && obj['licenses']['denied_license'] === 'T'){
+                    denied_yes.prop('checked',true);
+                }else if(obj['licenses']['denied_license'] && obj['licenses']['denied_license'] === 'F'){
+                    denied_no.prop('checked',true);
+                }
+                if(obj['licenses']['suspended_license'] && obj['licenses']['suspended_license'] === 'T'){
+                    suspended_yes.prop('checked',true);
+                }else if(obj['licenses']['suspended_license'] && obj['licenses']['suspended_license'] === 'F'){
+                    suspended_no.prop('checked',true);
+                }
+                if(obj['licenses']['performance_issues'] && obj['licenses']['performance_issues'] === 'T'){
+                    perform_yes.prop('checked',true);
+                }else if(obj['licenses']['performance_issues'] && obj['licenses']['performance_issues'] === 'F'){
+                    perform_no.prop('checked',true);
+                }
+                if(obj['licenses']['felony_conviction'] && obj['licenses']['felony_conviction'] === 'T'){
+                    felony_yes.prop('checked',true);
+                }else if(obj['licenses']['felony_conviction'] && obj['licenses']['felony_conviction'] === 'F'){
+                    felony_no.prop('checked',true);
+                }
+            }
+            
             (function(){
                 date_filler.fillMonths(exp_mo,1,12);
                 date_filler.fillYears(exp_yr,2014,2022);
@@ -2981,6 +3014,7 @@ var Questions = {
                 perform_no[0].disabled = true;
                 felony_yes[0].disabled = true;
                 felony_no[0].disabled = true;
+                _populate(Questions["5"].user_ref);
             })();
             
             function _enable_questions(){
