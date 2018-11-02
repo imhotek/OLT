@@ -159,7 +159,7 @@ var User_Factory = (function(){
             obj["licenses"] = JSON.parse(_getFile(lic));
             var expl = filename_stub+obj["username"]+filename_tails[6];
             obj["explanations"] = JSON.parse(_getFile(expl));
-            obj["profile_pic"] = filename_stub+obj["username"]+"/imgs/profile_pic.png";
+            obj["profile_pic"] = filename_stub+obj["username"]+"/imgs/1.png";
             arr.push(obj);
         });
     }

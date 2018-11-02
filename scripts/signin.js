@@ -308,7 +308,12 @@ var signin = (function(){
         if(guest_user && !ret_user){
             Application_Sequence.init(TileFactory.get_all(),guest_user);
         }else if(!guest_user && ret_user){
+            if(ret_user['user_type'] === 'new_applicant')
             Application_Sequence.init(TileFactory.get_all(),ret_user);
+            else if(ret_user['user_type'] === 'pending_applicant'){
+                var pending_applicant = new Pending_Applicant(ret_user);
+                pending_applicant.construct();                
+            }                
         }
     }    
     function _setpage(){             

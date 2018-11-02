@@ -3299,8 +3299,7 @@ var Questions = {
                 username:'',
                 last_page_completed:'',
                 explanation:'',
-                signature:'',
-                signed_date:''
+                signature:''
             };
             function save_and_close(){
                 ref.$outer.find('#sign_page').remove();
@@ -3404,17 +3403,16 @@ var Questions = {
                 }
                 window.explanations.username = Questions["6"].user_ref.getUsername();
                 window.explanations.last_page_completed = '6';
-                window.explanations.signature = ctx.canvas.toDataURL();
+                window.explanations.signature = ctx.canvas.toDataURL('image/png').replace(/^data:image\/(png|jpg);base64,/, '');
                 window.explanations.explanation = textarea[0].value.trim();
-                window.explanations.signed_date = months[date.getMonth()]+" "+date.getDate()+", "+date.getFullYear();
                 _write_to_file();
                 ref.$outer.find('#sign_page').remove();
                 ref.run_me = true;
                 Application_Sequence.retract(ref);
                 ref.running = false;
                 delete window.explanations;
-                var new_applicant = new New_Applicant(Questions["6"].user_ref.getUsername());
-                new_applicant.construct();
+                var pending_applicant = new Pending_Applicant(Questions["6"].user_ref);
+                pending_applicant.construct();
             });
         }
     }
@@ -3649,6 +3647,5 @@ var Application_Sequence = (function(){
       deploy:deploy,
       retract:retract,
       populate_date_cells:_populate_date_cells
-    };
-    
+    };   
 })();
