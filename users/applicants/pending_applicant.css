@@ -1,0 +1,33 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    overflow-x: hidden
+}
+
+#wrapper{
+    display: flex;
+    flex-flow: column;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: black;
+}
+#nav{
+    flex: 0 1 auto;
+}
+.nav_buttons{
+    border-radius: 5px;
+    border: 1px solid white;
+    font: 150% bold tahoma;
+    color: white;
+    text-align: center;
+    padding: 1%;
+}
+
+.nav_buttons:hover{
+    color: #33ffff;
+    border: 1px solid #33ffff;
+    cursor: all-scroll;
+}
+#action_box{
+    max-height: 0px
+}
