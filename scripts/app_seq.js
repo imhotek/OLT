@@ -3411,7 +3411,7 @@ var Questions = {
                 Application_Sequence.retract(ref);
                 ref.running = false;
                 delete window.explanations;
-                var pending_applicant = new Pending_Applicant(Questions["6"].user_ref);
+                var pending_applicant = new Pending_Applicant(Questions["6"].user_ref,'test');
                 pending_applicant.construct();
             });
         }

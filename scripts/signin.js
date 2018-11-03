@@ -311,7 +311,7 @@ var signin = (function(){
             if(ret_user['user_type'] === 'new_applicant')
             Application_Sequence.init(TileFactory.get_all(),ret_user);
             else if(ret_user['user_type'] === 'pending_applicant'){
-                var pending_applicant = new Pending_Applicant(ret_user);
+                var pending_applicant = new Pending_Applicant(ret_user,'test');
                 pending_applicant.construct();                
             }                
         }
