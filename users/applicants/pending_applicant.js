@@ -29,16 +29,30 @@ function Pending_Applicant(ref,type){
         // BUILD PAGE START....
         _deploy_action_box:function(){
             $action_box.css({
-                'min-width':(width*0.4)+'px',
+                'max-width':(width*0.5)+'px',
                 "display":"flex",
                 "flex-flow":"column nowrap",
-                "justify-content":"flex-start",       
+                "justify-content":"center",       
                 "align-items":"center",
-                "border":"2px solid blue",
+                "align-content":"space-around",
                 "font":"150% bold white tahoma"
             });
-           $action_box.animate({'max-height':(height*0.2)},750,function(){
-               $action_box.text('Congratulations!');
+            $action_box.find('canvas').attr({'width':width*0.5,'height':height*0.2});
+               $action_box.find('canvas').css({
+                   'flex':'0 1 auto',
+                   'background-color':'black'
+               });
+               $action_box.find('div').css({
+                   'flex':'0 1 auto',
+                   'background-color':'black',
+                   'min-width':'0px',
+                   'max-height':'0px'
+               });
+           $action_box.animate({'min-height':(height*0.3)},750,function(){
+               $action_box.find('div').animate({// INSTEAD, make this run after canvas animation completes.
+                   'min-width':(width*0.5)+'px',
+                   'max-height':(height*0.1)+'px'
+               },100);
            });
         },
         _build_body:function(){
