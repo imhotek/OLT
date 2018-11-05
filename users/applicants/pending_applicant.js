@@ -52,7 +52,13 @@ function Pending_Applicant(ref,type){
                $action_box.find('div').animate({// INSTEAD, make this run after canvas animation completes.
                    'min-width':(width*0.5)+'px',
                    'max-height':(height*0.1)+'px'
-               },100);
+               },100,function(){
+                   var c_w = $action_box.find('canvas').attr('width');
+                   var c_h = $action_box.find('canvas').attr('height');
+                   var penmen = new Penmen('Congratulations!',$action_box.find('canvas'),0,0,c_w,c_h,5000);
+                   penmen.init();
+                   penmen.draw();
+               });
            });
         },
         _build_body:function(){
