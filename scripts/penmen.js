@@ -1,12 +1,16 @@
 'use strict';
 
-function Penmen(str,canvas,start_x,start_y,end_x,end_y,time){
+function Penmen(str,canvas,top_x1,top_y1,top_x2,top_y2,bot_x3,bot_y3,bot_x4,bot_y4,time){
     var snd_obj = {
         text:str,
-        left_x:start_x,
-        left_y:start_y,
-        right_x:end_x,
-        right_y:end_y,
+        x1:top_x1,
+        y1:top_y1,
+        x2:top_x2,
+        y2:top_y2,
+        x3:bot_x3,
+        y3:bot_y3,
+        x4:bot_x4,
+        y4:bot_y4,
         duration:time
     };
     function _createXMLHttp(){
