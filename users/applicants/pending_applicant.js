@@ -55,7 +55,7 @@ function Pending_Applicant(ref,type){
                },100,function(){
                    var c_w = $action_box.find('canvas').attr('width');
                    var c_h = $action_box.find('canvas').attr('height');
-                   var penmen = new Penmen('A',$action_box.find('canvas'),0,0,c_w,0,c_w,c_h,0,c_h,250);
+                   var penmen = new Penmen('AAAAAAAAAAAAAAA',$action_box.find('canvas'),0,0,c_w,0,c_w,c_h,0,c_h,250);
                    penmen.init();
                });
            });
