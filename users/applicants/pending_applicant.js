@@ -22,6 +22,7 @@ function Pending_Applicant(ref,type){
     var $content_body = $content_background.find('#content_body');
     var $action_box = $body.find('#action_box');
     var $loader = $body.find('#loader');
+    var profile = null;
     var $left_panel = $body.find('#left_panel');
     var $right_panel = $body.find('#right_panel');
     var penmen = null;
@@ -34,13 +35,11 @@ function Pending_Applicant(ref,type){
                    'min-width':(width*0.5)+'px',
                    'max-height':(height*0.1)+'px'
                },100,function(){
-                   //while(!profile_img_added){
                         var c_w = $action_box.find('canvas').attr('width');
                         var c_h = $action_box.find('canvas').attr('height');
                         var arr = ['CONGRATULATIONS!','YOU HAVE COMPLETED YOUR APPLICATION','PLEASE UPLOAD A PROFILE PHOTO'];
                         penmen = new Penmen(arr,$action_box.find('canvas'),0+(c_w*0.01),0+(c_h*0.01),c_w*0.99,0+(c_h*0.01),c_w*0.99,c_h*0.99,0+(c_w*0.01),c_h*0.99,500);
                         penmen.init();  
-                    //}
                });
             
         },        
@@ -77,6 +76,8 @@ function Pending_Applicant(ref,type){
                 "align-items":"center"
             });
             $content_body.css({});
+            profile =  new Applicant_Profile($loader);
+            profile.construct();
         },
         _build_header:function(){
             $nav.css({

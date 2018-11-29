@@ -7,8 +7,8 @@ function Profile_Page(ref,userType){
     header = picBox = usernameBox = detailBox = banner = nameBox = phoneBox = emailBox = idBox = null;
     var height = window.innerHeight;
     var width = window.innerWidth;
-    var default_img_src = "pics/avatar.png";
-    var banner_src = "pics/collapsed_logo.png";
+    var default_img_src = "/home/thoth/NetBeansProjects/OLTranspo/public_html/pics/avatar.png";
+    var banner_src = "/home/thoth/NetBeansProjects/OLTranspo/public_html/pics/collapsed_logo.png";
     var obj = {
         page: null,
         _set_page: function(){

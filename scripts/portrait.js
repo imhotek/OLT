@@ -35,7 +35,11 @@ var portrait = (function(){
         var h = ctx.canvas.height;
         ctx.fillRect(0,0,w,h);
         ctx.lineWidth = 1.0;
-        done = true;
+        frame_count = 6.25;
+        frame_rate = 2.5;
+        counter = 0;
+        imageIndex = 0;
+        set_status(true);
     }
     function _ptX(x){
         return ((x/1509)*width);

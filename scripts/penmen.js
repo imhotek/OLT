@@ -5,6 +5,7 @@ function Penmen(str,canvas,top_x1,top_y1,top_x2,top_y2,bot_x3,bot_y3,bot_x4,bot_
     var str_arr = str;
     var index = 0;
     var limit = str_arr.length;
+    var shutdown = false;
     var snd_obj = {
         text:null,
         x1:top_x1,
@@ -17,6 +18,13 @@ function Penmen(str,canvas,top_x1,top_y1,top_x2,top_y2,bot_x3,bot_y3,bot_x4,bot_
         y4:bot_y4,
         duration:time
     };
+    function set_shutdown(bool){
+        shutdown = bool;
+    }
+    function get_shutdown(){
+        return shutdown;
+    }
+    
     function _clear_canvas(){
         ctx.fillStyle = "#000000";
         var w = ctx.canvas.width;
@@ -66,14 +74,13 @@ function Penmen(str,canvas,top_x1,top_y1,top_x2,top_y2,bot_x3,bot_y3,bot_x4,bot_
                         portrait.setContext(ctx);
                         portrait.setContext2(ctx);
                         portrait.render();
-                        index = null;
                         var handle2 = setInterval(function(){
                             if(portrait.get_status()){
                                 clearInterval(handle2);
                                 handle2 = null;
                                 index = 0;
                                 portrait.set_status(false);
-                                setTimeout(init,10000);
+                                setTimeout(init,7000);
                             }
                         },25);
                     },1000);
@@ -82,23 +89,27 @@ function Penmen(str,canvas,top_x1,top_y1,top_x2,top_y2,bot_x3,bot_y3,bot_x4,bot_
         },obj['ref_rate']);
     }
     function init(){
-        _clear_canvas();
-        var req = _createXMLHttp();
-        req.open('post','http://localhost:6600'/*'http://olthompson.com:6600'*/,true);
-        req.onreadystatechange = function(){
-           if(req.status === 200 && req.readyState === 4){
-               var obj = JSON.parse(req.responseText);
-               if(!obj['error']){
-                   _draw(obj);
-                }else{
-                    alert("Error!");
-                }
-           }
-        };
-        snd_obj.text = str_arr[index];
-        req.send(JSON.stringify(snd_obj)); 
+        if(!get_shutdown()){
+            _clear_canvas();
+            var req = _createXMLHttp();
+            req.open('post','http://localhost:6600'/*'http://olthompson.com:6600'*/,true);
+            req.onreadystatechange = function(){
+               if(req.status === 200 && req.readyState === 4){
+                   var obj = JSON.parse(req.responseText);
+                   if(!obj['error']){
+                       _draw(obj);
+                    }else{
+                        alert("Error!");
+                    }
+               }
+            };
+            snd_obj.text = str_arr[index];
+            req.send(JSON.stringify(snd_obj)); 
+        }
     }
     return {
-        init:init
+        init:init,
+        set_shutdown:set_shutdown,
+        get_shutdown:get_shutdown
     };
 }
