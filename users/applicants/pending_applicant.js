@@ -24,9 +24,26 @@ function Pending_Applicant(ref,type){
     var $loader = $body.find('#loader');
     var $left_panel = $body.find('#left_panel');
     var $right_panel = $body.find('#right_panel');
+    var penmen = null;
+    var ctx = $action_box.find('canvas')[0].getContext('2d');
     
     var obj = {
         // BUILD PAGE START....
+        _animation_sequence:function(){
+            $action_box.find('div').animate({// INSTEAD, make this run after canvas animation completes.
+                   'min-width':(width*0.5)+'px',
+                   'max-height':(height*0.1)+'px'
+               },100,function(){
+                   //while(!profile_img_added){
+                        var c_w = $action_box.find('canvas').attr('width');
+                        var c_h = $action_box.find('canvas').attr('height');
+                        var arr = ['CONGRATULATIONS!','YOU HAVE COMPLETED YOUR APPLICATION','PLEASE UPLOAD A PROFILE PHOTO'];
+                        penmen = new Penmen(arr,$action_box.find('canvas'),0+(c_w*0.01),0+(c_h*0.01),c_w*0.99,0+(c_h*0.01),c_w*0.99,c_h*0.99,0+(c_w*0.01),c_h*0.99,500);
+                        penmen.init();  
+                    //}
+               });
+            
+        },        
         _deploy_action_box:function(){
             $action_box.css({
                 'max-width':(width*0.5)+'px',
@@ -48,17 +65,7 @@ function Pending_Applicant(ref,type){
                    'min-width':'0px',
                    'max-height':'0px'
                });
-           $action_box.animate({'min-height':(height*0.3)},750,function(){
-               $action_box.find('div').animate({// INSTEAD, make this run after canvas animation completes.
-                   'min-width':(width*0.5)+'px',
-                   'max-height':(height*0.1)+'px'
-               },100,function(){
-                   var c_w = $action_box.find('canvas').attr('width');
-                   var c_h = $action_box.find('canvas').attr('height');
-                   var penmen = new Penmen('AAAAAAAAAAAAAAA',$action_box.find('canvas'),0,0,c_w,0,c_w,c_h,0,c_h,250);
-                   penmen.init();
-               });
-           });
+           $action_box.animate({'min-height':(height*0.3)},750,this._animation_sequence);
         },
         _build_body:function(){
             $content_background.css({

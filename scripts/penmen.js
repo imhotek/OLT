@@ -1,8 +1,12 @@
 'use strict';
 
 function Penmen(str,canvas,top_x1,top_y1,top_x2,top_y2,bot_x3,bot_y3,bot_x4,bot_y4,time){
+    var ctx = canvas[0].getContext('2d');
+    var str_arr = str;
+    var index = 0;
+    var limit = str_arr.length;
     var snd_obj = {
-        text:str,
+        text:null,
         x1:top_x1,
         y1:top_y1,
         x2:top_x2,
@@ -13,6 +17,12 @@ function Penmen(str,canvas,top_x1,top_y1,top_x2,top_y2,bot_x3,bot_y3,bot_x4,bot_
         y4:bot_y4,
         duration:time
     };
+    function _clear_canvas(){
+        ctx.fillStyle = "#000000";
+        var w = ctx.canvas.width;
+        var h = ctx.canvas.height;
+        ctx.fillRect(0,0,w,h);
+    }
     function _createXMLHttp(){
         if(window.XMLHttpRequest){
             return new XMLHttpRequest();
@@ -20,8 +30,9 @@ function Penmen(str,canvas,top_x1,top_y1,top_x2,top_y2,bot_x3,bot_y3,bot_x4,bot_
             return new ActiveXObject('Microsoft.XMLHTTP');
         }
     }
-    var ctx = canvas[0].getContext('2d');
-    function _draw(obj){console.log(obj);
+    
+    function _draw(obj){
+        console.log(obj);
         ctx.strokeStyle = "white";
         ctx.beginPath();
         var i,j;
@@ -43,22 +54,49 @@ function Penmen(str,canvas,top_x1,top_y1,top_x2,top_y2,bot_x3,bot_y3,bot_x4,bot_
                 clearInterval(handle);
                 handle = null; 
                 console.log('done');
+                index+=1;
+                if(index<limit){
+                    setTimeout(init,1000);
+                }else{
+                    index = 0;
+                    setTimeout(function(){
+                        var w = ctx.canvas.width;
+                        var h = ctx.canvas.height;
+                        portrait.init(w,h);
+                        portrait.setContext(ctx);
+                        portrait.setContext2(ctx);
+                        portrait.render();
+                        index = null;
+                        var handle2 = setInterval(function(){
+                            if(portrait.get_status()){
+                                clearInterval(handle2);
+                                handle2 = null;
+                                index = 0;
+                                portrait.set_status(false);
+                                setTimeout(init,10000);
+                            }
+                        },25);
+                    },1000);
+                }
             }
-        },0.5);
+        },obj['ref_rate']);
     }
     function init(){
+        _clear_canvas();
         var req = _createXMLHttp();
         req.open('post','http://localhost:6600'/*'http://olthompson.com:6600'*/,true);
         req.onreadystatechange = function(){
            if(req.status === 200 && req.readyState === 4){
                var obj = JSON.parse(req.responseText);
-               //if(!obj['error']){console.log(obj);
-                   console.log(obj); _draw(obj);
-                //}
+               if(!obj['error']){
+                   _draw(obj);
+                }else{
+                    alert("Error!");
+                }
            }
         };
+        snd_obj.text = str_arr[index];
         req.send(JSON.stringify(snd_obj)); 
-       // _draw(obj);
     }
     return {
         init:init
