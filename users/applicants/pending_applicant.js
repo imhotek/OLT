@@ -75,7 +75,28 @@ function Pending_Applicant(ref,type){
                 "justify-content":"flex-start",       
                 "align-items":"center"
             });
-            $content_body.css({});
+            $content_body.css({
+                "flex":"0 1 auto",
+                "display":"flex",
+                "flex-flow":"row",
+                "justify-content":"center",
+                "align-items":"center",
+                "align-content":"space-around",
+                "width":(width)+"px",
+                "min-height":(height*0.85)+"px"
+            });
+            $loader.css({
+                "flex":"0 1 auto",
+                "background-color": "#33ffff",
+                "border-radius": "5px",
+                "display":"flex",
+                "flex-flow":"column",
+                "justify-content":"flex-start",
+                "align-items":"flex-start",
+                "width":(width*0.7)+"px",
+                "height":(height)+"px",
+                "opacity":"1"
+            });
             profile =  new Applicant_Profile($loader);
             profile.construct();
         },

@@ -26,7 +26,7 @@ function Profile_Page(ref,userType){
             this._set_header();
             $outer[0].appendChild(this.page);
         },
-        _set_new_picBox_src: function(img){
+        set_new_picBox_src: function(img){
             picBox.style.backgroundImage = "url('"+img+"')";
         },
         _set_picBox: function(){
