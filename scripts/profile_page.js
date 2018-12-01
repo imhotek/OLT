@@ -27,7 +27,10 @@ function Profile_Page(ref,userType){
             $outer[0].appendChild(this.page);
         },
         set_new_picBox_src: function(img){
-            picBox.style.backgroundImage = "url('"+img+"')";
+            $(picBox).find('div').css({
+                "background-image":"url('"+img+"')"
+            });
+            
         },
         _set_picBox: function(){
             picBox = document.createElement("div");

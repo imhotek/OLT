@@ -7,8 +7,6 @@ function Pending_Applicant(ref,type){
     var prod_script_stub = "/var/www/html/";
     var stub = "/var/www/html/users/applicants/"+user_ref['username']+"/";
     var test_stub = test_script_stub+"/users/applicants/"+user_ref['username']+"/";
-    var img = new Image();
-    var profile_img_added = false;
     var width = window.innerWidth;
     var height = window.innerHeight;
     var $body = $('body');
@@ -27,6 +25,23 @@ function Pending_Applicant(ref,type){
     var $right_panel = $body.find('#right_panel');
     var penmen = null;
     var ctx = $action_box.find('canvas')[0].getContext('2d');
+    var img = new Image();
+    img.onload = function(){
+        $action_box.remove();
+        $content_body.css({"order":"1"});
+        profile.set_new_picBox_src(img.src);
+    };
+    img.onerror = function(){
+        obj._deploy_action_box();
+    };
+    img.src = test_script_stub+"users/applicants/"+user_ref['username']+"/imgs/profile_pic";
+    function _createXMLHttpRequest(){
+            if(window.XMLHttpRequest){
+                return new XMLHttpRequest();
+            }else{
+                return new ActiveXObject('Microsoft.XMLHTTP');
+            }
+        }
     
     var obj = {
         // BUILD PAGE START....
@@ -65,6 +80,34 @@ function Pending_Applicant(ref,type){
                    'max-height':'0px'
                });
            $action_box.animate({'min-height':(height*0.3)},750,this._animation_sequence);
+            var obj = {'username':user_ref['username'],'type':null,'blob':null};
+            var reader = new FileReader();
+            var file = $action_box.find('input[type="file"]')[0];
+            file.onchange = function(){
+                    reader.readAsDataURL(file.files[0]);
+                    obj['type'] = file.files[0]['type'].replace(/^image\//,'');
+            };	
+            reader.onload = function(){
+                    obj['blob'] = reader.result.replace(/^data:image\/(png|jpg);base64,/, '');
+                    var req = _createXMLHttpRequest();
+                    //6386 - sizeport,6387 - mainport
+                    req.open('post','http://localhost:6386'/*'http://olthompson.com:6386'*/,true);
+                    var data = JSON.stringify(obj);
+                    var size = {size:data.length};
+                    req.onreadystatechange = function(){
+                        if(req.readyState === 4 && req.status === 200){
+                            var req2 = _createXMLHttpRequest();
+                            req2.open('post','http://localhost:6387'/*'http://olthompson.com:6387'*/,true);
+                            req2.onreadystatechange = function(){
+                                if(req2.readyState === 4 && req2.status === 200){
+                                    img.src = test_script_stub+"users/applicants/"+user_ref['username']+"/imgs/profile_pic";
+                                }
+                            };
+                            req2.send(data);
+                        }
+                    };
+                    req.send(JSON.stringify(size));
+            };
         },
         _build_body:function(){
             $content_background.css({
@@ -94,8 +137,7 @@ function Pending_Applicant(ref,type){
                 "justify-content":"flex-start",
                 "align-items":"flex-start",
                 "width":(width*0.7)+"px",
-                "height":(height)+"px",
-                "opacity":"1"
+                "height":(height)+"px"
             });
             profile =  new Applicant_Profile($loader);
             profile.construct();
@@ -159,18 +201,10 @@ function Pending_Applicant(ref,type){
             this._build_wrapper();
             this._build_header();
             this._build_body();
-            this._deploy_action_box();
         },
         // ...END BUILD PAGE
         _user_init_callback:function(data){
             
-        },
-        _createXMLHttpRequest:function(){
-            if(window.XMLHttpRequest){
-                return new XMLHttpRequest();
-            }else{
-                return new ActiveXObject('Microsoft.XMLHTTP');
-            }
         },
         _user_init_query:function(){
             if(user_ref['user_type'] === 'new_applicant'){
@@ -179,18 +213,18 @@ function Pending_Applicant(ref,type){
                 
             }
         },
-        init:function(){
+        _init:function(){
             this._user_init_query();
         },
         construct:function(){
-            this.init();
             this._init_page();
+            this._init();
         }
     };
     return obj;
 }
 
 (function(){
-    var test_app = new Pending_Applicant({username:'dwilson',user_type:'new_applicant'},'test');
+    var test_app = new Pending_Applicant({username:'dwilson',user_type:'new_applicant'/*,profile_pic:'/home/thoth/Pictures/Images/relativistic.jpg'*/},'test');
     test_app.construct();
 })();

@@ -8,7 +8,8 @@
     display: flex;
     flex-flow: column;
     justify-content: flex-start;
-    align-items: center;
+    align-items: flex-start;
+    align-content: space-between;
     background-color: black;
 }
 #nav{
