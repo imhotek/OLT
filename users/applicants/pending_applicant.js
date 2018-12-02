@@ -80,7 +80,7 @@ function Pending_Applicant(ref,type){
                    'max-height':'0px'
                });
            $action_box.animate({'min-height':(height*0.3)},750,this._animation_sequence);
-            var obj = {'username':user_ref['username'],'type':null,'blob':null};
+            var obj = {'username':user_ref['username'],'type':null,'payload':null};
             var reader = new FileReader();
             var file = $action_box.find('input[type="file"]')[0];
             file.onchange = function(){
@@ -88,22 +88,32 @@ function Pending_Applicant(ref,type){
                     obj['type'] = file.files[0]['type'].replace(/^image\//,'');
             };	
             reader.onload = function(){
-                    obj['blob'] = reader.result.replace(/^data:image\/(png|jpg);base64,/, '');
+                    obj['payload'] = reader.result.replace(/^data:image\/(png|jpg);base64,/, '');
+                    var data = JSON.stringify(obj);
+                    var size = {size:data.length};
                     var req = _createXMLHttpRequest();
                     //6386 - sizeport,6387 - mainport
                     req.open('post','http://localhost:6386'/*'http://olthompson.com:6386'*/,true);
-                    var data = JSON.stringify(obj);
-                    var size = {size:data.length};
                     req.onreadystatechange = function(){
-                        if(req.readyState === 4 && req.status === 200){
+                        if(req.readyState === 4 && req.status === 200){console.log('SUCCESS');/*
                             var req2 = _createXMLHttpRequest();
-                            req2.open('post','http://localhost:6387'/*'http://olthompson.com:6387'*/,true);
+                            req2.open('post','http://localhost:6387',true);
                             req2.onreadystatechange = function(){
                                 if(req2.readyState === 4 && req2.status === 200){
                                     img.src = test_script_stub+"users/applicants/"+user_ref['username']+"/imgs/profile_pic";
                                 }
                             };
-                            req2.send(data);
+                            req2.send(data);console.log(data);*/
+                        }else{
+                            //alert('ERROR');
+                            var req2 = _createXMLHttpRequest();
+                            req2.open('post','http://localhost:6387',true);
+                            req2.onreadystatechange = function(){
+                                //if(req2.readyState === 4 && req2.status === 200){
+                                    img.src = test_script_stub+"users/applicants/"+user_ref['username']+"/imgs/profile_pic";
+                                //}
+                            };
+                            req2.send(data);console.log(data);//console.log('ERROR');
                         }
                     };
                     req.send(JSON.stringify(size));
