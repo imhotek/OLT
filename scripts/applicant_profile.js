@@ -1226,6 +1226,9 @@ function Applicant_Profile(ref){
             this.__proto__ = new Profile_Page($outer,"applicant");
             this.init();
             this._set_body();
+            $outer.find('input').each(function(){
+                $(this)[0].disabled = true;
+            });
         }
     };
     return obj;

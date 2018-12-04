@@ -27,10 +27,8 @@ function Profile_Page(ref,userType){
             $outer[0].appendChild(this.page);
         },
         set_new_picBox_src: function(img){
-            $(picBox).find('div').css({
-                "background-image":"url('"+img+"')"
-            });
-            
+            var ctx = $(picBox).find('canvas')[0].getContext('2d');
+            ctx.drawImage(img,0,0,img.width,img.height,0,0,ctx.canvas.width,ctx.canvas.height);            
         },
         _set_picBox: function(){
             picBox = document.createElement("div");
@@ -43,7 +41,8 @@ function Profile_Page(ref,userType){
             picBox.style.alignItems = "flex-start";
             picBox.style.width = "40%";
             picBox.style.height = "99%";
-            var pic = document.createElement('div');
+            var pic = document.createElement('canvas');
+            var ctx = pic.getContext('2d');
             pic.style.flex = "0 1 auto";
             pic.style.order = "1";
             pic.style.width = "99%";
@@ -51,10 +50,11 @@ function Profile_Page(ref,userType){
             pic.style.borderRight = "5px solid black";
             pic.style.borderBottom = "5px solid black";
             pic.style.backgroundColor = "white";
-            pic.style.backgroundImage = "url('"+default_img_src+"')";
-            pic.style.bacgroundRepeat = "no-repeat";
-            pic.style.backgroundPosition = "center center";
-            pic.style.backgroundSize = "85%";
+            var img = new Image();
+            img.onload = function(){
+                ctx.drawImage(img,0,0,img.width,img.height,0,0,pic.width,pic.height);
+            };
+            img.src = default_img_src;
             usernameBox = document.createElement("div");
             usernameBox.style.flex = "0 1 auto";
             usernameBox.style.order = "2";

@@ -105,6 +105,8 @@ function Penmen(str,canvas,top_x1,top_y1,top_x2,top_y2,bot_x3,bot_y3,bot_x4,bot_
             };
             snd_obj.text = str_arr[index];
             req.send(JSON.stringify(snd_obj)); 
+        }else{
+            _clear_canvas();
         }
     }
     return {
