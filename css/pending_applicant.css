@@ -27,8 +27,36 @@
 .nav_buttons:hover{
     color: #33ffff;
     border: 1px solid #33ffff;
+    font: 165% bold tahoma;
+    cursor: all-scroll;
+}
+.lft_panel_div{
+    border:2px solid white    
+}
+.lft_panel_text{
+    font: 200% bold tahoma;
+    color:white;
+    border:2px solid white 
+}
+.lft_panel_div:hover{
+    border: 2px solid #33ffff;
+    cursor: all-scroll;
+}
+.lft_panel_text:hover{
+    font: 215% bold tahoma;
+    color: #33ffff;
+    border:2px solid #33ffff ;
     cursor: all-scroll;
 }
 #action_box{
     max-height: 0px
+}
+
+#map{ 
+    margin:1.5%;
+    width:97%;
+    height:0%;
+    order:1;
+    flex: 0 1 auto;
+    border:2px solid white;
 }

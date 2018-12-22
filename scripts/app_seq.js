@@ -3371,7 +3371,7 @@ var Questions = {
                         if(obj['db_error'] === 'true'){
                             alert('Error connecting to database. Please try again later.');
                             delete window.explanations;
-                            window.location.href = 'index.html';
+                            window.location.href = 'index';
                         }
                     }
                 };

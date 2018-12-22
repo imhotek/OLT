@@ -23,6 +23,7 @@ function Pending_Applicant(ref,type){
     var profile = null;
     var $left_panel = $body.find('#left_panel');
     var $right_panel = $body.find('#right_panel');
+    options.init($left_panel,$loader,$right_panel,user_ref);
     var penmen = null;
     var ctx = $action_box.find('canvas')[0].getContext('2d');
     var img = new Image();
@@ -34,10 +35,12 @@ function Pending_Applicant(ref,type){
         $action_box.animate({"min-height":"0px"},1000,function(){
             $(this).remove();
         });
+        $loader.animate({"margin-top":(height*0.05)+"px"},500);
         profile.set_new_picBox_src(img);
     };
     img.onerror = function(){
         obj._deploy_action_box();
+        profile.set_new_picBox_src();
     };
     img.src = test_script_stub+"/users/applicants/"+user_ref['username']+"/imgs/profile_pic";
     function _createXMLHttpRequest(){
@@ -139,13 +142,14 @@ function Pending_Applicant(ref,type){
                 "display":"flex",
                 "flex-flow":"row",
                 "justify-content":"center",
-                "align-items":"center",
+                "align-items":"flex-start",
                 "width":(width)+"px",
-                "min-height":(height*0.85)+"px"
+                "min-height":(height*0.85)+"px",
+                "padding-bottom":(height*0.1)+"px"
             });
             $loader.css({
                 "flex":"0 1 auto",
-                "background-color": "#33ffff",
+                "background-color": "#000000",
                 "border-radius": "5px",
                 "display":"flex",
                 "flex-flow":"column",
@@ -153,6 +157,16 @@ function Pending_Applicant(ref,type){
                 "align-items":"flex-start",
                 "width":(width*0.7)+"px",
                 "height":(height)+"px"
+            });
+            $left_panel.css({
+                "flex":"0 1 auto",
+                "border-radius": "5px",
+                "display":"flex",
+                "flex-flow":"column",
+                "justify-content":"flex-start",
+                "align-items":"flex-start",
+                "width":"0px",
+                "height":"0px"
             });
             profile =  new Applicant_Profile($loader);
             profile.construct();
@@ -195,6 +209,9 @@ function Pending_Applicant(ref,type){
                 "min-height":1.5*(height*0.1)+"px"
             });
             $nav_opts.find('div').each(function(){$(this).addClass('nav_buttons');});
+            $nav_opts.find('#updates').click(function(){
+                options.updates();
+            });
             $adv_opts.css({
                 "flex-grow":"1",
                 "display":"flex",

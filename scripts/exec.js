@@ -412,7 +412,7 @@ var exec = (function(){
     function init(u,p){
         username = u;
         password = p;
-        //window.location.href = "exec.html";
+        //window.location.href = "exec";
         _init_page();
     }
     function _createXMLHttp(){
