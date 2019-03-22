@@ -84,11 +84,11 @@ var guest = (function(){
         var size = {size:len};
         var callback = function(d){
             var request = _createXMLHttpRequest();
-            request.open('post','http://olthompson.com:6365',true);
+            request.open('post','http://localhost:6365',true);
             request.onreadystatechange = function(){};
             request.send(d);
         };
-        pre_request.open('post','http://olthompson.com:6364',true);
+        pre_request.open('post','http://localhost:6364',true);
         pre_request.onreadystatechange = function(){
             if(pre_request.readyState === 4 && pre_request.status === 200){
                 callback(data);
@@ -104,7 +104,7 @@ var guest = (function(){
         var error_string = "";
         var callback = function(d){
             var request = _createXMLHttpRequest();
-            request.open('post', 'http://olthompson.com:6367',true);
+            request.open('post', 'http://localhost:6367',true);
             request.onreadystatechange = function(){
                 if(request.readyState === 4 && request.status === 200){
                     // Server will check to see if username and password are found. If they are, it must construct a json object
@@ -140,7 +140,7 @@ var guest = (function(){
             var len = data.length;
             var size_obj = {size:len};
             var pre_request = _createXMLHttpRequest();
-            pre_request.open('post', 'http://olthompson.com:6366',true);
+            pre_request.open('post', 'http://localhost:6366',true);
 	    pre_request.onreadystatechange = function(){
                 if(pre_request.readyState === 4 && pre_request.status === 200){ 
                     callback(data);
@@ -154,7 +154,7 @@ var guest = (function(){
         var error_string = "";
             var callback = function(d){
                 var request = _createXMLHttpRequest();
-                request.open('post','http://olthompson.com:6369',true);
+                request.open('post','http://localhost:6369',true);
                 request.onreadystatechange = function(){
                     if(request.readyState === 4 && request.status === 200){
                         // C server only has to send us back username true or false for already present or not. 
@@ -189,7 +189,7 @@ var guest = (function(){
             var len = data.length;
             var size = {size:len};
             var pre_request = _createXMLHttpRequest();
-            pre_request.open('post','http://olthompson.com:6368',true);
+            pre_request.open('post','http://localhost:6368',true);
             pre_request.onreadystatechange = function(){
                 if(pre_request.readyState === 4 && pre_request.status === 200){
                     callback(data);

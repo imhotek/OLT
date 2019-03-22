@@ -93,7 +93,7 @@ function User(){
                 return new ActiveXObject('Microsoft.XMLHTTP');
             }
         })();
-        request.open('post','http://olthompson.com:6385',true);
+        request.open('post','http://localhost:6385',true);
         request.onreadystatechange = function(){
             if(request.readyState === 4 && request.status === 200){
                 if(request.responseText['true']){
@@ -119,7 +119,7 @@ function User(){
         var data = JSON.stringify(obj);
         var len = data.length;
         var size_obj = {size:len};
-        request.open('post','http://olthompson.com:6384',true);
+        request.open('post','http://localhost:6384',true);
         request.onreadystatechange = function(){
             if(request.readyState === 4 && request.status === 4){
                 callback(data);
@@ -142,7 +142,7 @@ function User(){
         var data = JSON.stringify(obj);
         var len = data.length;
         var size_obj = {size:len};
-        request.open('post','http://olthompson.com:6384',true);
+        request.open('post','http://localhost:6384',true);
         request.onreadystatechange = function(){
             if(request.readyState === 4 && request.status === 4){
                 callback(data);
@@ -165,7 +165,7 @@ function User(){
         var data = JSON.stringify(obj);
         var len = data.length;
         var size_obj = {size:len};
-        request.open('post','http://olthompson.com:6384',true);
+        request.open('post','http://localhost:6384',true);
         request.onreadystatechange = function(){
             if(request.readyState === 4 && request.status === 200){
                 callback(data);

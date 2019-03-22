@@ -247,7 +247,7 @@ var exec = (function(){
     function _query_applicant_db(){
         var send_obj = {send:"applicants"};
         var req = _createXMLHttp();
-        req.open('post','http://olthompson.com:6500',false); 
+        req.open('post','http://localhost:6500',false); 
         req.onreadystatechange = function(){
             if(req.status === 200 && req.readyState === 4){
                 User_Factory.createApplicantArray(req.responseText,applicant_array);

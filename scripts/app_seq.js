@@ -226,11 +226,11 @@ var Questions = {
                 };
                 var callback = function(d){
                     var request = _createXMLHttpRequest();
-                    request.open('post','http://olthompson.com:6371',true);
+                    request.open('post','http://localhost:6371',true);
                     request.send(d);
                 };
                 var pre_request = _createXMLHttpRequest();
-                pre_request.open('post','http://olthompson.com:6370',true);
+                pre_request.open('post','http://localhost:6370',true);
                 pre_request.onreadystatechange = function(){
                     if(pre_request.readyState === 4 && pre_request.status === 200){
                         callback(json);
@@ -1446,7 +1446,7 @@ var Questions = {
                             return new ActiveXObject('Microsoft.XMLHTTP');
                         }
                     })();
-                    request.open('post','http://olthompson.com:6373',true);
+                    request.open('post','http://localhost:6373',true);
                     request.onreadystatechange = function(){};
                     request.send(d);
                 };
@@ -1457,7 +1457,7 @@ var Questions = {
                         return new ActiveXObject('Microsoft.XMLHTTP');
                     }
                 })();
-                pre_request.open('post','http://olthompson.com:6372',true);
+                pre_request.open('post','http://localhost:6372',true);
                 pre_request.onreadystatechange = function(){
                     if(pre_request.status === 200 && pre_request.readyState === 4){
                         console.log("pre_response: "+pre_request.responseText);
@@ -1951,11 +1951,11 @@ var Questions = {
                     }
                 })();
                 var callback = function(d){
-                    request.open('post','http://olthompson.com:6375',true);
+                    request.open('post','http://localhost:6375',true);
                     request.onreadystatechange = function(){};
                     request.send(d);
                 };
-                pre_request.open('post','http://olthompson.com:6374',true);
+                pre_request.open('post','http://localhost:6374',true);
                 pre_request.onreadystatechange = function(){
                     if(pre_request.readyState === 4 && pre_request.status === 200){
                         callback(data);
@@ -2325,7 +2325,7 @@ var Questions = {
             
             function callback(data){  
                 var request = _createXMLHttpRequest();
-                request.open('post','http://olthompson.com:6377',true);
+                request.open('post','http://localhost:6377',true);
                 request.onreadystatechange = function(){
                     if(request.readyState === 4 && request.status === 200){
                         var obj = JSON.parse(request.responseText);
@@ -2349,7 +2349,7 @@ var Questions = {
                 var data = JSON.stringify(experience);
                 var len = data.length;
                 var obj = {size:len};
-                pre_request.open('post','http://olthompson.com:6376',true);
+                pre_request.open('post','http://localhost:6376',true);
                 pre_request.onreadystatechange = function(){
                     if(pre_request.status === 200 && pre_request.readyState === 4){
                         callback(data);
@@ -2645,7 +2645,7 @@ var Questions = {
             }
             function callback(data){
                 var request = _createXMLHttpRequest();
-                request.open('post','http://olthompson.com:6379',true);
+                request.open('post','http://localhost:6379',true);
                 request.onreadystatechange = function(){
                     if(request.readyState === 4 && request.status === 200){
                         var obj = JSON.parse(request.responseText);
@@ -2663,7 +2663,7 @@ var Questions = {
                 var len = data.length;
                 var obj = {size:len};
                 var pre_request = _createXMLHttpRequest();
-                pre_request.open('post','http://olthompson.com:6378',true);
+                pre_request.open('post','http://localhost:6378',true);
                 pre_request.onreadystatechange = function(){
                     if(pre_request.status === 200 && pre_request.readyState === 4){
                         callback(data);
@@ -3019,7 +3019,7 @@ var Questions = {
             }
             function _callback(data){
                 var request = _createXMLHttpRequest();
-                request.open('post','http://olthompson.com:6381',true);
+                request.open('post','http://localhost:6381',true);
                 request.onreadystatechange = function(){
                     if(request.readyState === 4 && request.status === 200){
                         var obj = JSON.parse(request.responseText);
@@ -3038,7 +3038,7 @@ var Questions = {
                 var len = data.length;
                 var obj = {size:len};
                 var pre_request = _createXMLHttpRequest();
-                pre_request.open('post','http://olthompson.com:6380',true);
+                pre_request.open('post','http://localhost:6380',true);
                 pre_request.onreadystatechange = function(){
                     if(pre_request.status === 200 && pre_request.readyState === 4){
                         _callback(data);
@@ -3191,7 +3191,7 @@ var Questions = {
             }
             function _callback(data){
                 var request = _createXMLHttpRequest();
-                request.open('post','http://olthompson.com:6383',true);
+                request.open('post','http://localhost:6383',true);
                 request.onreadystatechange = function(){
                     if(request.readyState === 4 && request.status === 200){
                         var obj = JSON.parse(request.responseText);
@@ -3209,7 +3209,7 @@ var Questions = {
                 var len = data.length;
                 var obj = {size:len};
                 var pre_request = _createXMLHttpRequest();
-                pre_request.open('post','http://olthompson.com:6382',true);
+                pre_request.open('post','http://localhost:6382',true);
                 pre_request.onreadystatechange = function(){
                     if(pre_request.status === 200 && pre_request.readyState === 4){
                         _callback(data);
